@@ -8,6 +8,10 @@ class MovableObject {
     imageCache = {};
     currentImage = 0;
     intervalIDs = [];
+    otherDirection = false;
+    swimmingUp = false;
+    swimmingDown = false;
+
 
     loadImage(path) {
         this.img = new Image();
@@ -58,7 +62,9 @@ class MovableObject {
     }
 
     moveLeft() {
-    
+        setInterval(() => {
+            this.x -= this.speed;
+        }, 1000 / 60)
     }
 
     setStoppableInterval(fn, time) {

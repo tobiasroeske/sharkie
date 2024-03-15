@@ -43,48 +43,59 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
-                this.x += this.speed;
-            }
-        },1000 / 60);
-
-        setInterval(() => {
-            if (this.world.keyboard.LEFT) {
-                this.x -= this.speed;
-            }
-        },1000 / 60);
-
-        setInterval(() => {
-            if (this.world.keyboard.UP) {
-                this.y -= this.speed;
-            }
-        },1000 / 60);
-
-        setInterval(() => {
-            if (this.world.keyboard.DOWN) {
-                this.y += this.speed;
-            }
-        },1000 / 60);
+        this.move();
 
         setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 let i = this.currentImage % this.IDLE_IMAGES.length;
                 let path = this.IDLE_IMAGES[i];
                 this.img = this.imageCache[path];
-                
+
                 this.currentImage++;
             }
         }, 220)
         setInterval(() => {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 let i = this.currentImage % this.SWIMMING_IMAGES.length;
                 let path = this.SWIMMING_IMAGES[i];
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
-        }, 150) // Problem, wenn Interval nicht gleich
+        }, 150)
+    }
 
+    move() {
+        setInterval(() => {
+            if (this.world.keyboard.RIGHT) {
+                this.otherDirection = false;
+                this.x += this.speed;
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.world.keyboard.LEFT) {
+                this.otherDirection = true;
+                this.x -= this.speed;
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.world.keyboard.UP) {
+                this.swimmingUp = true;
+                this.y -= this.speed;
+            } else {
+                this.swimmingUp = false;
+            }
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.world.keyboard.DOWN) {
+                this.swimmingDown = true;
+                this.y += this.speed;
+            } else {
+                this.swimmingDown = false;
+            }
+        }, 1000 / 60);
     }
 
 }
