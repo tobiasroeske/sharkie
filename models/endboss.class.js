@@ -3,7 +3,7 @@ class Endboss extends MovableObject {
     y = -50;
     width = 350;
     height = 450;
-    
+
     FLOATING_IMAGES = [
         'img/2.Enemy/3 Final Enemy/2.floating/1.png',
         'img/2.Enemy/3 Final Enemy/2.floating/2.png',
@@ -18,7 +18,7 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3 Final Enemy/2.floating/11.png',
         'img/2.Enemy/3 Final Enemy/2.floating/12.png',
         'img/2.Enemy/3 Final Enemy/2.floating/13.png'
-    ]    
+    ]
 
     INTRO_IMAGES = [
         'img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
@@ -42,5 +42,13 @@ class Endboss extends MovableObject {
         setInterval(() => {
             this.animateImages(this.FLOATING_IMAGES);
         })
+    }
+
+    drawFrame(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x, this.y + this.height / 2 - 60, this.width, this.height / 2);
+        ctx.stroke();
     }
 }

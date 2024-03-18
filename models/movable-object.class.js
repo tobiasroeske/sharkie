@@ -26,6 +26,20 @@ class MovableObject {
         })
     }
 
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawFrame(ctx) {
+        if (this instanceof Background == false) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
     animateImages(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
@@ -33,53 +47,19 @@ class MovableObject {
         this.currentImage++;
     }
 
-    moveDown() {
-        let myInterval = setInterval(() => {
-            this.intervalIDs.push(myInterval);
-            this.y += this.speed;
-            if (this.y >= 410) {
-                clearInterval(myInterval);
-                this.moveUp();
-            }
-        }, 1000 / 60);
+    isColliding(obj) {
+        return this.x + this.width >= obj.x &&
+            this.y + this.height > obj.y &&
+            this.x < obj.x &&
+            this.y < obj.y + obj.height
     }
 
-    moveUp() {
-        let myInterval = setInterval(() => {
-            this.intervalIDs.push(myInterval);
-            this.y -= this.speed;
-            if (this.y <= 0) {
-                clearInterval(myInterval);
-                this.moveDown();
-            }
-        }, 1000 / 60)
-    }
 
-    move() {
-        let randomNumber = Math.floor(Math.random() * 11);
-        if (randomNumber >= 5) {
-            this.moveDown();
-        } else {
-            this.moveUp();
-        }
-    }
-
-    moveRight() {
-
-    }
-
-    moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60)
-    }
-
-    setStoppableInterval(fn, time) {
-        let id = setInterval(fn, time);
-        this.intervalIDs.push(id);
-    }
-
-    stopAllIntervals() {
-        this.intervalIDs.forEach(clearInterval);
-    }
+    //Junus Version
+    // isColliding(obj) {
+    //     return (this.x + this.width) >= obj.x &&
+    //         this.x <= (obj.x + obj.width) &&
+    //         (this.y + this.offsetY + this.height) >= obj.y &&
+    //         (this.y + this.offsetY) <= (obj.y + obj.height)
+    // }
 }

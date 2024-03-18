@@ -39,9 +39,30 @@ class Character extends MovableObject {
         this.swimming_sound.volume = 0.7;
     }
 
+    drawFrame(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x, this.y + this.height / 2 - 10, this.width - 5, this.height / 2 - 15);
+        ctx.stroke();
+    }
+
+    isColliding(obj) {
+        if (obj instanceof Endboss) {
+            return this.x + this.width -5 > obj.x &&
+            (this.y + this.height / 2 - 10) > obj.y + obj.height / 2 - 60 &&
+            this.x < obj.x &&
+            this.y + this.height / 2 - 10 < obj.y + obj.height / 2 - 60 +  obj.height / 2;
+        } else {
+            return this.x + this.width -5 > obj.x &&
+            (this.y + this.height / 2 - 10) > obj.y &&
+            this.x < obj.x &&
+            this.y + this.height / 2 - 10 < obj.y + obj.height;
+        }
+    }
+
     animate() {
         this.move();
-
         setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);
@@ -52,7 +73,6 @@ class Character extends MovableObject {
                 this.animateImages(this.SWIMMING_IMAGES);
             }
         }, 150)
-        //this.world.camera_x = -this.x;
     }
 
     move() {
@@ -101,5 +121,6 @@ class Character extends MovableObject {
             this.swimmingDown = false;
         }
     }
+    
 
 }

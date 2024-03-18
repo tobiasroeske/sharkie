@@ -12,10 +12,21 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld() {
         this.character.world = this;
+    }
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach(enemy => {
+                if (this.character.isColliding(enemy)) {
+                    console.log('is colliding with', enemy);
+                }
+            })
+        }, 200);
     }
 
     draw() {
@@ -44,37 +55,14 @@ class World {
         } else if (obj.swimmingDown) {
             this.rotateCharacter(obj, 30);
         } else {
-            this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
-            this.drawRect(obj);
+            obj.draw(this.ctx);
+            obj.drawFrame(this.ctx);
         }
-    }
-
-    drawRect(obj) {
-        if (obj instanceof Character) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = "5";
-            this.ctx.strokeStyle = "blue";
-            this.ctx.rect(obj.x, obj.y + obj.height / 2 -10, obj.width -5, obj.height / 2 -15);
-            this.ctx.stroke();
-        } else if (obj instanceof Endboss) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = "5";
-            this.ctx.strokeStyle = "blue";
-            this.ctx.rect(obj.x, obj.y + obj.height / 2 - 60, obj.width, obj.height / 2);
-            this.ctx.stroke();
-        } else if (obj instanceof Background == false) {
-            this.ctx.beginPath();
-            this.ctx.lineWidth = "5";
-            this.ctx.strokeStyle = "blue";
-            this.ctx.rect(obj.x, obj.y, obj.width, obj.height);
-            this.ctx.stroke();
-        } 
-        
     }
 
     flipCharacter(obj) {
         this.ctx.save();
-        this.drawRect(obj);
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.width, 0);
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(obj.img, obj.x * -1, obj.y, obj.width, obj.height);
@@ -83,7 +71,7 @@ class World {
 
     rotateCharacter(obj, degrees) {
         this.ctx.save();
-        this.drawRect(obj);
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.drawImage(obj.img, -obj.width / 2, -obj.height / 2, obj.width, obj.height);
@@ -92,7 +80,7 @@ class World {
 
     rotateFlippedCharacter(obj, degrees) {
         this.ctx.save();
-        this.drawRect(obj);
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.scale(-1, 1);
@@ -102,5 +90,14 @@ class World {
 
     addObjectsToMap(objects) {
         objects.forEach(object => this.addToMap(object))
+    }
+
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        this.intervalIDs.push(id);
+    }
+
+    stopAllIntervals() {
+        this.intervalIDs.forEach(clearInterval);
     }
 }
