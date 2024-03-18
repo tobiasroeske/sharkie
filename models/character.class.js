@@ -29,17 +29,14 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/6.png'
     ];
     world;
-
+    swimming_sound = new Audio('audio/swimming.mp3');
 
     constructor() {
         super().loadImage('img/1.Sharkie/3.Swim/1.png');
         this.loadImages(this.IDLE_IMAGES);
         this.loadImages(this.SWIMMING_IMAGES);
         this.animate();
-    }
-
-    jump() {
-
+        this.swimming_sound.volume = 0.7;
     }
 
     animate() {
@@ -47,68 +44,62 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
-                let i = this.currentImage % this.IDLE_IMAGES.length;
-                let path = this.IDLE_IMAGES[i];
-                this.img = this.imageCache[path];
-
-                this.currentImage++;
+                this.animateImages(this.IDLE_IMAGES);
             }
         }, 220)
         setInterval(() => {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                let i = this.currentImage % this.SWIMMING_IMAGES.length;
-                let path = this.SWIMMING_IMAGES[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.animateImages(this.SWIMMING_IMAGES);
             }
         }, 150)
+        //this.world.camera_x = -this.x;
     }
 
     move() {
-        this.moveRight();
-        this.moveLeft();
-        this.moveUp();
-        this.moveDown();
+        setInterval(() => {
+            this.swimming_sound.pause();
+            this.moveRight();
+            this.moveLeft();
+            this.moveUp();
+            this.moveDown();
+            this.world.camera_x = -this.x + 80;
+        }, 1000 / 60);
     }
 
     moveRight() {
-        setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
-                this.otherDirection = false;
-                this.x += this.speed;
-            }
-        }, 1000 / 60);
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.otherDirection = false;
+            this.x += this.speed;
+            this.swimming_sound.play();
+        }
     }
 
     moveLeft() {
-        setInterval(() => {
-            if (this.world.keyboard.LEFT) {
-                this.otherDirection = true;
-                this.x -= this.speed;
-            }
-        }, 1000 / 60);
+        if (this.world.keyboard.LEFT && this.x > -80) {
+            this.otherDirection = true;
+            this.x -= this.speed;
+            this.swimming_sound.play();
+        }
     }
 
     moveUp() {
-        setInterval(() => {
-            if (this.world.keyboard.UP) {
-                this.swimmingUp = true;
-                this.y -= this.speed;
-            } else {
-                this.swimmingUp = false;
-            }
-        }, 1000 / 60);
+        if (this.world.keyboard.UP && this.y > -65) {
+            this.swimmingUp = true;
+            this.y -= this.speed;
+            this.swimming_sound.play();
+        } else {
+            this.swimmingUp = false;
+        }
     }
 
     moveDown() {
-        setInterval(() => {
-            if (this.world.keyboard.DOWN) {
-                this.swimmingDown = true;
-                this.y += this.speed;
-            } else {
-                this.swimmingDown = false;
-            }
-        }, 1000 / 60);
+        if (this.world.keyboard.DOWN && this.y < this.world.level.level_end_y) {
+            this.swimmingDown = true;
+            this.y += this.speed;
+            this.swimming_sound.play();
+        } else {
+            this.swimmingDown = false;
+        }
     }
 
 }

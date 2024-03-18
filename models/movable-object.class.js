@@ -26,6 +26,13 @@ class MovableObject {
         })
     }
 
+    animateImages(images) {
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     moveDown() {
         let myInterval = setInterval(() => {
             this.intervalIDs.push(myInterval);
@@ -58,7 +65,7 @@ class MovableObject {
     }
 
     moveRight() {
-        
+
     }
 
     moveLeft() {
