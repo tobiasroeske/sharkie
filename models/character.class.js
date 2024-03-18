@@ -65,20 +65,31 @@ class Character extends MovableObject {
     }
 
     move() {
+        this.moveRight();
+        this.moveLeft();
+        this.moveUp();
+        this.moveDown();
+    }
+
+    moveRight() {
         setInterval(() => {
             if (this.world.keyboard.RIGHT) {
                 this.otherDirection = false;
                 this.x += this.speed;
             }
         }, 1000 / 60);
+    }
 
+    moveLeft() {
         setInterval(() => {
             if (this.world.keyboard.LEFT) {
                 this.otherDirection = true;
                 this.x -= this.speed;
             }
         }, 1000 / 60);
+    }
 
+    moveUp() {
         setInterval(() => {
             if (this.world.keyboard.UP) {
                 this.swimmingUp = true;
@@ -87,7 +98,9 @@ class Character extends MovableObject {
                 this.swimmingUp = false;
             }
         }, 1000 / 60);
+    }
 
+    moveDown() {
         setInterval(() => {
             if (this.world.keyboard.DOWN) {
                 this.swimmingDown = true;

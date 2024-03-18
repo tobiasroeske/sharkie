@@ -44,15 +44,15 @@ class World {
 
     addToMap(obj) {
         if (obj.otherDirection && obj.swimmingUp) {
-            this.rotateFlippedCharacter(obj, 45);
+            this.rotateFlippedCharacter(obj, 30);
         } else if (obj.otherDirection && obj.swimmingDown) {
-            this.rotateFlippedCharacter(obj, -45);
+            this.rotateFlippedCharacter(obj, -30);
         } else if (obj.otherDirection) {
             this.flipCharacter(obj)
         } else if (obj.swimmingUp) {
-            this.rotateCharacter(obj, -45);
+            this.rotateCharacter(obj, -30);
         } else if (obj.swimmingDown) {
-            this.rotateCharacter(obj, 45);
+            this.rotateCharacter(obj, 30);
         } else {
             this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
         }
@@ -82,14 +82,6 @@ class World {
         this.ctx.drawImage(obj.img, -obj.width / 2, -obj.height / 2, obj.width, obj.height);
         this.ctx.restore();
     }
-
-    // rotateCharacter(obj) {
-    //     this.ctx.save();
-    //     this.ctx.translate(this.canvas.width / 2, this.canvas.heihgt / 2);
-    //     this.ctx.rotate(-1 * Math.PI / 4);
-    //     this.ctx.drawImage(obj.img, obj.x * -1, obj.y, obj.width, obj.height);
-    //     this.ctx.restore();
-    // }
 
     addObjectsToMap(objects) {
         objects.forEach(object => this.addToMap(object))
