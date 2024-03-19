@@ -1,10 +1,11 @@
 class Character extends MovableObject {
     y = 180;
     speed = 3;
-    lifepoints = 5;
-    statusbars = [
-        new Statusbar(20)
-    ]
+    otherDirection = false;
+    swimmingUp = false;
+    swimmingDown = false;
+    lifepoints = 20;
+
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
         'img/1.Sharkie/1.IDLE/2.png',
@@ -32,6 +33,54 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
     ];
+
+    HURT_POISENED_IMAGES = [
+        'img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/5.png'
+    ];
+
+    HURT_SHOCKED_IMAGES = [
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png'
+    ];
+
+    DEAD_IMAGES = [
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00000.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00001.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00002.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00003.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00004.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00005.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00006.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00007.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00008.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00009.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00010.png',
+    ]
+
+    DEAD_SHOCKED_IMAGES = [
+        'img/1.Sharkie/6.dead/2.Electro_shock/1.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/2.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/3.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/4.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/5.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/6.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/7.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/8.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/10.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/7.png'
+    ];
+
     world;
     swimming_sound = new Audio('audio/swimming.mp3');
 
@@ -39,8 +88,38 @@ class Character extends MovableObject {
         super().loadImage('img/1.Sharkie/3.Swim/1.png');
         this.loadImages(this.IDLE_IMAGES);
         this.loadImages(this.SWIMMING_IMAGES);
+        this.loadImages(this.DEAD_IMAGES);
+        this.loadImages(this.DEAD_SHOCKED_IMAGES);
         this.animate();
         this.swimming_sound.volume = 0.7;
+    }
+
+    isDead() {
+        return this.lifepoints == 0;
+    }
+
+    deathAnimation(obj) {
+        this.stopAllIntervals()
+        if (obj instanceof Jellyfish) {
+            this.typeOfDeath(this.DEAD_SHOCKED_IMAGES, 3)
+        } else {
+            this.typeOfDeath(this.DEAD_IMAGES, -3);
+        }
+    }
+
+    typeOfDeath(images, speed) {
+        let deadInterval = setInterval(() => {
+            this.animateImages(images);
+            this.deadCounter++
+            if (this.deadCounter == images.length - 1) {
+                clearInterval(deadInterval);
+                this.loadImage(images[images.length - 1]);
+                setInterval(() => {
+                    this.y += speed;
+                }, 1000 / 60);
+            }
+        }, 250);
+        this.intervalIDs.push(deadInterval);
     }
 
     drawFrame(ctx) {
@@ -54,33 +133,35 @@ class Character extends MovableObject {
     isColliding(obj) {
         if (obj instanceof Endboss) {
             return this.x + this.width - 5 > obj.x &&
-            (this.y + this.height / 2 - 10) > obj.y + obj.height / 3 &&
-            this.x < obj.x + obj.width &&
-            this.y + this.height / 2 - 10 < obj.y + obj.height / 3 +  obj.height / 2;
+                (this.y + this.height / 2 - 10) > obj.y + obj.height / 3 &&
+                this.x < obj.x + obj.width &&
+                this.y + this.height / 2 - 10 < obj.y + obj.height / 3 + obj.height / 2;
         } else {
-            return this.x + this.width -5 > obj.x &&
-            (this.y + this.height / 2 - 10) > obj.y &&
-            this.x < obj.x + obj.width &&
-            this.y + this.height / 2 - 10 < obj.y + obj.height;
+            return this.x + this.width - 5 > obj.x &&
+                (this.y + this.height / 2 - 10) > obj.y &&
+                this.x < obj.x + obj.width &&
+                this.y + this.height / 2 - 10 < obj.y + obj.height;
         }
     }
 
     animate() {
         this.move();
-        setInterval(() => {
+        let idleInterval = setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);
             }
         }, 220)
-        setInterval(() => {
+        this.intervalIDs.push(idleInterval);
+        let swimInterval = setInterval(() => {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.animateImages(this.SWIMMING_IMAGES);
             }
         }, 150)
+        this.intervalIDs.push(swimInterval);
     }
 
     move() {
-        setInterval(() => {
+        let moveInterval = setInterval(() => {
             this.swimming_sound.pause();
             this.moveRight();
             this.moveLeft();
@@ -88,13 +169,13 @@ class Character extends MovableObject {
             this.moveDown();
             this.world.camera_x = -this.x + 80;
         }, 1000 / 60);
+        this.intervalIDs.push(moveInterval);
     }
 
     moveRight() {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.otherDirection = false;
             this.x += this.speed;
-            this.statusbars[0].x += this.speed;
             this.swimming_sound.play();
         }
     }
@@ -103,7 +184,6 @@ class Character extends MovableObject {
         if (this.world.keyboard.LEFT && this.x > -80) {
             this.otherDirection = true;
             this.x -= this.speed;
-            this.statusbars[0].x -= this.speed;
             this.swimming_sound.play();
         }
     }
@@ -127,6 +207,6 @@ class Character extends MovableObject {
             this.swimmingDown = false;
         }
     }
-    
+
 
 }

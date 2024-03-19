@@ -20,10 +20,15 @@ class World {
     }
 
     checkCollisions() {
-        setInterval(() => {
+        let collisionInterval = setInterval(() => {
             this.level.enemies.forEach(enemy => {
                 if (this.character.isColliding(enemy)) {
-                    this.character.statusbars[0].loseLife();
+                    this.character.lifepoints -=  5;
+                    if (this.character.isDead()) {
+                        clearInterval(collisionInterval);
+                        this.character.lifepoints = 0;
+                        this.character.deathAnimation(enemy);
+                    }
                 }
             })
         }, 200);
@@ -33,11 +38,9 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
-        this.addObjectsToMap(this.character.statusbars);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
-        // draw() wird immer wieder aufgrufen
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -91,14 +94,5 @@ class World {
 
     addObjectsToMap(objects) {
         objects.forEach(object => this.addToMap(object))
-    }
-
-    setStoppableInterval(fn, time) {
-        let id = setInterval(fn, time);
-        this.intervalIDs.push(id);
-    }
-
-    stopAllIntervals() {
-        this.intervalIDs.forEach(clearInterval);
     }
 }

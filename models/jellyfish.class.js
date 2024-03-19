@@ -21,7 +21,6 @@ class Jellyfish extends MovableObject {
 
     moveDown() {
         let myInterval = setInterval(() => {
-            this.intervalIDs.push(myInterval);
             this.y += this.speed;
             if (this.y >= 410) {
                 clearInterval(myInterval);
@@ -32,7 +31,6 @@ class Jellyfish extends MovableObject {
 
     moveUp() {
         let myInterval = setInterval(() => {
-            this.intervalIDs.push(myInterval);
             this.y -= this.speed;
             if (this.y <= 0) {
                 clearInterval(myInterval);

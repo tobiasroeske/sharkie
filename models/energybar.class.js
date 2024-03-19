@@ -1,9 +1,8 @@
-class Statusbar extends MovableObject {
+class Energybar extends DrawableObject {
     x = 20;
     y = 20;
     width = 200;
     height = 50;
-    lifepoints = 100;
 
     LIFE_IMAGES = [
         'img/4. Marcadores/orange/0_  copia.png',
@@ -14,15 +13,8 @@ class Statusbar extends MovableObject {
         'img/4. Marcadores/orange/100_  copia.png'
     ]
 
-    constructor(y) {
+    constructor() {
         super().loadImage(this.LIFE_IMAGES[5]);
         this.loadImages(this.LIFE_IMAGES);
-        this.y = y;
-    }
-
-    loseLife() {
-        this.lifepoints -= 5;
-        let index = Math.round(this.lifepoints / 20) 
-        this.loadImage(this.LIFE_IMAGES[index]);
     }
 }
