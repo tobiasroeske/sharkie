@@ -11,7 +11,7 @@ function init() {
 }
 
 window.addEventListener('keydown', (e) => {
-    background_sound.play()
+    // background_sound.play()
     keyboard.NO_KEY_PRESSED = false;
     if (e.key == 'ArrowLeft' || e.key == 'a') {
         keyboard.LEFT = true;

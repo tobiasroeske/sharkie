@@ -23,7 +23,7 @@ class World {
         let collisionInterval = setInterval(() => {
             this.level.enemies.forEach(enemy => {
                 if (this.character.isColliding(enemy)) {
-                    this.character.lifepoints -=  5;
+                    this.character.isHurt(enemy);
                     if (this.character.isDead()) {
                         clearInterval(collisionInterval);
                         this.character.lifepoints = 0;

@@ -4,7 +4,7 @@ class Character extends MovableObject {
     otherDirection = false;
     swimmingUp = false;
     swimmingDown = false;
-    lifepoints = 20;
+    lifepoints = 100;
 
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -32,25 +32,6 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/3.png',
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
-    ];
-
-    HURT_POISENED_IMAGES = [
-        'img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
-        'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
-        'img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
-        'img/1.Sharkie/5.Hurt/1.Poisoned/5.png'
-    ];
-
-    HURT_SHOCKED_IMAGES = [
-        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png'
     ];
 
     DEAD_IMAGES = [
@@ -81,6 +62,19 @@ class Character extends MovableObject {
         'img/1.Sharkie/6.dead/2.Electro_shock/7.png'
     ];
 
+    HURT_POISONED_IMAGES = [
+        'img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
+        'img/1.Sharkie/5.Hurt/1.Poisoned/4.png'
+    ]
+
+    HURT_SHOCKED_IMAGES = [
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png'
+    ]
+
     world;
     swimming_sound = new Audio('audio/swimming.mp3');
 
@@ -90,12 +84,10 @@ class Character extends MovableObject {
         this.loadImages(this.SWIMMING_IMAGES);
         this.loadImages(this.DEAD_IMAGES);
         this.loadImages(this.DEAD_SHOCKED_IMAGES);
+        this.loadImages(this.HURT_SHOCKED_IMAGES);
+        this.loadImages(this.HURT_POISONED_IMAGES);
         this.animate();
         this.swimming_sound.volume = 0.7;
-    }
-
-    isDead() {
-        return this.lifepoints == 0;
     }
 
     deathAnimation(obj) {
@@ -122,6 +114,24 @@ class Character extends MovableObject {
         this.intervalIDs.push(deadInterval);
     }
 
+    hurtAnimation(obj) {
+        if (obj instanceof Jellyfish) {
+            this.typeOfInsury(this.HURT_SHOCKED_IMAGES);
+        } else {
+            this.typeOfInsury(this.HURT_POISONED_IMAGES);
+        }
+    }
+
+    typeOfInsury(images) {
+        let i = 0;
+        let hurtInterval = setTimeout(() => {
+            this.animateImages(images);
+            if (i == images.length -1) {
+                clearInterval(hurtInterval);
+            }
+        }, 220);
+    }
+
     drawFrame(ctx) {
         ctx.beginPath();
         ctx.lineWidth = "5";
@@ -146,6 +156,7 @@ class Character extends MovableObject {
 
     animate() {
         this.move();
+        
         let idleInterval = setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);

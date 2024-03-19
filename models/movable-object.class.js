@@ -16,6 +16,16 @@ class MovableObject extends DrawableObject{
         }
     }
 
+    isDead() {
+        return this.lifepoints == 0;
+    }
+
+    isHurt(obj) {
+        this.lifepoints -= 5
+        console.log('lifepoints: ', this.lifepoints);
+        this.hurtAnimation(obj)
+    }
+
     animateImages(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
