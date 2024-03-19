@@ -1,6 +1,10 @@
 class Character extends MovableObject {
     y = 180;
     speed = 3;
+    lifepoints = 5;
+    statusbars = [
+        new Statusbar(20)
+    ]
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
         'img/1.Sharkie/1.IDLE/2.png',
@@ -49,14 +53,14 @@ class Character extends MovableObject {
 
     isColliding(obj) {
         if (obj instanceof Endboss) {
-            return this.x + this.width -5 > obj.x &&
-            (this.y + this.height / 2 - 10) > obj.y + obj.height / 2 - 60 &&
-            this.x < obj.x &&
-            this.y + this.height / 2 - 10 < obj.y + obj.height / 2 - 60 +  obj.height / 2;
+            return this.x + this.width - 5 > obj.x &&
+            (this.y + this.height / 2 - 10) > obj.y + obj.height / 3 &&
+            this.x < obj.x + obj.width &&
+            this.y + this.height / 2 - 10 < obj.y + obj.height / 3 +  obj.height / 2;
         } else {
             return this.x + this.width -5 > obj.x &&
             (this.y + this.height / 2 - 10) > obj.y &&
-            this.x < obj.x &&
+            this.x < obj.x + obj.width &&
             this.y + this.height / 2 - 10 < obj.y + obj.height;
         }
     }
@@ -90,6 +94,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.otherDirection = false;
             this.x += this.speed;
+            this.statusbars[0].x += this.speed;
             this.swimming_sound.play();
         }
     }
@@ -98,6 +103,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.LEFT && this.x > -80) {
             this.otherDirection = true;
             this.x -= this.speed;
+            this.statusbars[0].x -= this.speed;
             this.swimming_sound.play();
         }
     }

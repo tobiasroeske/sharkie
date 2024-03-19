@@ -36,19 +36,20 @@ class Endboss extends MovableObject {
     constructor() {
         super().loadImage(this.FLOATING_IMAGES[0]);
         this.loadImages(this.FLOATING_IMAGES);
+        this.animate();
     }
 
     animate() {
         setInterval(() => {
             this.animateImages(this.FLOATING_IMAGES);
-        })
+        }, 150)
     }
 
     drawFrame(ctx) {
         ctx.beginPath();
         ctx.lineWidth = "5";
         ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y + this.height / 2 - 60, this.width, this.height / 2);
+        ctx.rect(this.x, this.y + this.height / 3, this.width, this.height / 2);
         ctx.stroke();
     }
 }

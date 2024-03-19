@@ -1,6 +1,7 @@
 class Level {
     enemies;
     backgrounds;
+    statusbars
     level_end_x = 2220;
     level_end_y = 350;
 

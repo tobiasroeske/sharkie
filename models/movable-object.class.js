@@ -8,6 +8,7 @@ class MovableObject {
     imageCache = {};
     currentImage = 0;
     intervalIDs = [];
+    lifepoints = 100;
     otherDirection = false;
     swimmingUp = false;
     swimmingDown = false;
@@ -50,7 +51,7 @@ class MovableObject {
     isColliding(obj) {
         return this.x + this.width >= obj.x &&
             this.y + this.height > obj.y &&
-            this.x < obj.x &&
+            this.x < obj.x + obj.width &&
             this.y < obj.y + obj.height
     }
 
