@@ -172,7 +172,6 @@ class Character extends MovableObject {
 
     animate() {
         this.move();
-
         let idleInterval = setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);
@@ -194,9 +193,21 @@ class Character extends MovableObject {
             this.moveLeft();
             this.moveUp();
             this.moveDown();
-            this.world.camera_x = -this.x + 80;
+            this.world.camera_x = -this.x + 220;
+            if (this.world.level.inEndSection) {
+                this.world.camera_x = -2000;
+                this.world.level.level_end_x_left = 2000
+            }
         }, 1000 / 60);
         this.intervalIDs.push(moveInterval);
+    }
+
+
+
+    checkIfInEndSection() {
+        if (this.x >= 2220) {
+            this.world.level.inEndSection = true;
+        }
     }
 
     moveRight() {
@@ -204,12 +215,13 @@ class Character extends MovableObject {
             this.otherDirection = false;
             this.x += this.speed;
             this.x_frame += this.speed
+            this.checkIfInEndSection();
             this.swimming_sound.play();
         }
     }
 
     moveLeft() {
-        if (this.world.keyboard.LEFT && this.x > -80) {
+        if (this.world.keyboard.LEFT && this.x > this.world.level.level_end_x_left) {
             this.otherDirection = true;
             this.x -= this.speed;
             this.x_frame -= this.speed;
@@ -238,6 +250,4 @@ class Character extends MovableObject {
             this.swimmingDown = false;
         }
     }
-
-
 }
