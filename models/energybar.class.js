@@ -1,9 +1,5 @@
-class Energybar extends DrawableObject {
-    x = 20;
-    y = 20;
-    width = 200;
-    height = 50;
-
+class Energybar extends Statusbar {
+    
     LIFE_IMAGES = [
         'img/4. Marcadores/orange/0_  copia.png',
         'img/4. Marcadores/orange/20_ copia 2.png',
@@ -16,5 +12,12 @@ class Energybar extends DrawableObject {
     constructor() {
         super().loadImage(this.LIFE_IMAGES[5]);
         this.loadImages(this.LIFE_IMAGES);
+        this.y = 0;
+    }
+
+    getPercentage(percentage) {
+        let index = Math.round(percentage / 20);
+        let path = this.LIFE_IMAGES[index];
+        this.img = this.imageCache[path];
     }
 }

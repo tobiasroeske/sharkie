@@ -5,6 +5,9 @@ class World {
     canvas;
     keyboard;
     camera_x = 0;
+    energybar = new Energybar();
+    coinbar = new Coinbar();
+    poisonbar = new Poisonbar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -24,6 +27,7 @@ class World {
             this.level.enemies.forEach(enemy => {
                 if (this.character.isColliding(enemy)) {
                     this.character.isHurt(enemy);
+                    this.energybar.getPercentage(this.character.lifepoints);
                     if (this.character.isDead()) {
                         clearInterval(collisionInterval);
                         this.character.lifepoints = 0;
@@ -39,8 +43,14 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
         this.addToMap(this.character);
+        
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
+
+        // Objects which are static and don't move with camera
+        this.addToMap(this.energybar);
+        this.addToMap(this.coinbar);
+        this.addToMap(this.poisonbar);
         let self = this;
         requestAnimationFrame(function () {
             self.draw();

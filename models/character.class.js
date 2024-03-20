@@ -115,21 +115,17 @@ class Character extends MovableObject {
     }
 
     hurtAnimation(obj) {
-        if (obj instanceof Jellyfish) {
-            this.typeOfInsury(this.HURT_SHOCKED_IMAGES);
-        } else {
-            this.typeOfInsury(this.HURT_POISONED_IMAGES);
-        }
-    }
-
-    typeOfInsury(images) {
-        let i = 0;
-        let hurtInterval = setTimeout(() => {
-            this.animateImages(images);
-            if (i == images.length -1) {
-                clearInterval(hurtInterval);
+        setInterval(() => {
+            let timePassed = new Date().getTime() - this.lastHit;
+            timePassed = timePassed / 1000;
+            if (timePassed < 1) {
+                if (obj instanceof Jellyfish) {
+                    this.animateImages(this.HURT_SHOCKED_IMAGES);
+                } else {
+                    this.animateImages(this.HURT_POISONED_IMAGES);
+                }
             }
-        }, 220);
+        }, 200);
     }
 
     drawFrame(ctx) {
@@ -156,7 +152,7 @@ class Character extends MovableObject {
 
     animate() {
         this.move();
-        
+
         let idleInterval = setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);

@@ -1,29 +1,24 @@
-class MovableObject extends DrawableObject{
+class MovableObject extends DrawableObject {
     speed = 0.8;
     deadCounter = 0;
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    drawFrame(ctx) {
-        if (this instanceof Background == false) {
-            ctx.beginPath();
-            ctx.lineWidth = "5";
-            ctx.strokeStyle = "blue";
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
+    lastHit = 0;
 
     isDead() {
         return this.lifepoints == 0;
     }
 
+    hit() {
+        this.lifepoints -= 5;
+        if (this.lifepoints < 0) {
+            this.lifepoints = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
     isHurt(obj) {
-        this.lifepoints -= 5
-        console.log('lifepoints: ', this.lifepoints);
-        this.hurtAnimation(obj)
+        this.hit();
+        this.hurtAnimation(obj);
     }
 
     animateImages(images) {
