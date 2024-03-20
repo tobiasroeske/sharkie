@@ -1,5 +1,9 @@
 class Character extends MovableObject {
     y = 180;
+    x_frame = this.x;
+    y_frame = this.y + this.height / 2 - 10;
+    width_frame = this.width - 5;
+    height_frame = this.height / 2 - 15;
     speed = 3;
     otherDirection = false;
     swimmingUp = false;
@@ -150,15 +154,19 @@ class Character extends MovableObject {
 
     isColliding(obj) {
         if (obj instanceof Endboss) {
-            return this.x + this.width - 5 > obj.x &&
-                (this.y + this.height / 2 - 10) > obj.y + obj.height / 3 &&
-                this.x < obj.x + obj.width &&
-                this.y + this.height / 2 - 10 < obj.y + obj.height / 3 + obj.height / 2;
+            return (
+                this.x_frame + this.width_frame > obj.x &&
+                this.y_frame + this.height_frame > obj.y + obj.height / 3 &&
+                this.x_frame < obj.x + obj.width &&
+                this.y_frame < obj.y + obj.height / 3 + obj.height / 2
+            );
         } else {
-            return this.x + this.width - 5 > obj.x &&
-                (this.y + this.height / 2 - 10) > obj.y &&
-                this.x < obj.x + obj.width &&
-                this.y + this.height / 2 - 10 < obj.y + obj.height;
+            return (
+                this.x_frame + this.width_frame >= obj.x &&
+                this.y_frame + this.height_frame > obj.y &&
+                this.x_frame < obj.x + obj.width &&
+                this.y_frame < obj.y + obj.height
+            )
         }
     }
 
@@ -195,6 +203,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.otherDirection = false;
             this.x += this.speed;
+            this.x_frame += this.speed
             this.swimming_sound.play();
         }
     }
@@ -203,6 +212,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.LEFT && this.x > -80) {
             this.otherDirection = true;
             this.x -= this.speed;
+            this.x_frame -= this.speed;
             this.swimming_sound.play();
         }
     }
@@ -211,6 +221,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.UP && this.y > -65) {
             this.swimmingUp = true;
             this.y -= this.speed;
+            this.y_frame -= this.speed;
             this.swimming_sound.play();
         } else {
             this.swimmingUp = false;
@@ -221,6 +232,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.DOWN && this.y < this.world.level.level_end_y) {
             this.swimmingDown = true;
             this.y += this.speed;
+            this.y_frame += this.speed;
             this.swimming_sound.play();
         } else {
             this.swimmingDown = false;

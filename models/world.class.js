@@ -26,19 +26,19 @@ class World {
 
     checkCollisions() {
         let collisionInterval = setInterval(() => {
-            this.getCollisionsWithEnemy();
+            this.getCollisionsWithEnemy(collisionInterval);
             this.getCollisionsWithCollectables(this.level.coins, this.amountCoins, this.coinbar);
             this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
         }, 200);
     }
 
-    getCollisionsWithEnemy() {
+    getCollisionsWithEnemy(interval) {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.isHurt(enemy);
                 this.energybar.getPercentage(this.character.lifepoints);
                 if (this.character.isDead()) {
-                    clearInterval(collisionInterval);
+                    clearInterval(interval);
                     this.character.lifepoints = 0;
                     this.character.deathAnimation(enemy);
                 }
