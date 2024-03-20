@@ -5,6 +5,8 @@ class Character extends MovableObject {
     swimmingUp = false;
     swimmingDown = false;
     lifepoints = 100;
+    coins = 0;
+    poisons = 0;
 
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -88,6 +90,16 @@ class Character extends MovableObject {
         this.loadImages(this.HURT_POISONED_IMAGES);
         this.animate();
         this.swimming_sound.volume = 0.7;
+    }
+
+    addCoin() {
+        this.coins++;
+        console.log('collected coins: ', this.coins);
+    }
+
+    addPoison() {
+        this.poisons++;
+        console.log('collected poisons: ', this.poisons);
     }
 
     deathAnimation(obj) {

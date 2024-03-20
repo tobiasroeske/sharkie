@@ -22,5 +22,33 @@ const level1 = new Level(
         new Background('img/3. Background/Layers/3.Fondo 1/D.png', 1440),
         new Background('img/3. Background/Layers/2. Floor/D.png', 1440),
         new Background('img/3. Background/Layers/1. Light/COMPLETO.png', 1440)
+    ],
+    [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+    ],
+    [
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison(),
+        new Poison()
     ]
 )

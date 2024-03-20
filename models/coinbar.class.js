@@ -1,6 +1,6 @@
 class Coinbar extends Statusbar {
 
-    COIN_IMAGES = [
+    IMAGES = [
         'img/4. Marcadores/Purple/0_ _1.png',
         'img/4. Marcadores/Purple/20_ .png',
         'img/4. Marcadores/Purple/40_ _1.png',
@@ -11,8 +11,10 @@ class Coinbar extends Statusbar {
 
     constructor() {
         super();
-        this.loadImage(this.COIN_IMAGES[0]);
+        this.loadImage(this.IMAGES[0]);
+        this.loadImages(this.IMAGES);
         this.y = 40;
         this.height = 45;
     }
+
 }

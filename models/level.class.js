@@ -1,12 +1,15 @@
 class Level {
     enemies;
     backgrounds;
-    statusbars
+    coins;
+    poisons;
     level_end_x = 2220;
     level_end_y = 350;
 
-    constructor(e, b) {
+    constructor(e, b, c, p) {
         this.enemies = e;
         this.backgrounds = b;
+        this.coins = c;
+        this.poisons = p;
     }
 }

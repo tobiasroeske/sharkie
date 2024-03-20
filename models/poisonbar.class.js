@@ -1,6 +1,6 @@
 class Poisonbar extends Statusbar {
 
-    POISON_IMAGES = [
+    IMAGES = [
         'img/4. Marcadores/green/poisoned bubbles/0_ copia 2.png',
         'img/4. Marcadores/green/poisoned bubbles/20_ copia 3.png',
         'img/4. Marcadores/green/poisoned bubbles/40_ copia 2.png',
@@ -11,8 +11,8 @@ class Poisonbar extends Statusbar {
 
     constructor() {
         super();
-        this.loadImage(this.POISON_IMAGES[0]);
-        this.loadImages(this.POISON_IMAGES);
+        this.loadImage(this.IMAGES[0]);
+        this.loadImages(this.IMAGES);
         this.y = 75
         this.height = 45;
     }

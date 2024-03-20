@@ -21,13 +21,6 @@ class MovableObject extends DrawableObject {
         this.hurtAnimation(obj);
     }
 
-    animateImages(images) {
-        let i = this.currentImage % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    }
-
     isColliding(obj) {
         return this.x + this.width >= obj.x &&
             this.y + this.height > obj.y &&

@@ -8,6 +8,8 @@ class World {
     energybar = new Energybar();
     coinbar = new Coinbar();
     poisonbar = new Poisonbar();
+    amountCoins = this.level.coins.length;
+    amountPoisons = this.level.poisons.length;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -24,18 +26,43 @@ class World {
 
     checkCollisions() {
         let collisionInterval = setInterval(() => {
-            this.level.enemies.forEach(enemy => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.isHurt(enemy);
-                    this.energybar.getPercentage(this.character.lifepoints);
-                    if (this.character.isDead()) {
-                        clearInterval(collisionInterval);
-                        this.character.lifepoints = 0;
-                        this.character.deathAnimation(enemy);
-                    }
-                }
-            })
+            this.getCollisionsWithEnemy();
+            this.getCollisionsWithCollectables(this.level.coins, this.amountCoins, this.coinbar);
+            this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
         }, 200);
+    }
+
+    getCollisionsWithEnemy() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.isHurt(enemy);
+                this.energybar.getPercentage(this.character.lifepoints);
+                if (this.character.isDead()) {
+                    clearInterval(collisionInterval);
+                    this.character.lifepoints = 0;
+                    this.character.deathAnimation(enemy);
+                }
+            }
+        })
+    }
+
+    getCollisionsWithCollectables(arr, amount, bar) {
+        arr.forEach(item => {
+            if (this.character.isColliding(item)) {
+                let i = arr.indexOf(item);
+                arr.splice(i, 1)
+                if (item instanceof Coin) {
+                    this.character.addCoin();
+                    let percentage = 100 / amount * this.character.coins
+                    bar.getPercentage(percentage);
+                } else {
+                    this.character.addPoison();
+                    let percentage = 100 / amount * this.character.poisons
+                    bar.getPercentage(percentage);
+                }
+
+            }
+        })
     }
 
     draw() {
@@ -43,7 +70,8 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
         this.addToMap(this.character);
-        
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.poisons);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 

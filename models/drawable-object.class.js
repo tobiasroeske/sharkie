@@ -36,6 +36,13 @@ class DrawableObject {
         })
     }
 
+    animateImages(images) {
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     setStoppableInterval(fn, time) {
         let id = setInterval(fn, time);
         this.intervalIDs.push(id);
