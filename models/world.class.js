@@ -69,6 +69,13 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
+
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.energybar);
+        this.addToMap(this.coinbar);
+        this.addToMap(this.poisonbar);
+        this.ctx.translate(this.camera_x, 0);
+        
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.poisons);
@@ -76,9 +83,7 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
         // Objects which are static and don't move with camera
-        this.addToMap(this.energybar);
-        this.addToMap(this.coinbar);
-        this.addToMap(this.poisonbar);
+        
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
