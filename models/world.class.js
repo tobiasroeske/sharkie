@@ -99,7 +99,6 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-        // Objects which are static and don't move with camera
         
         let self = this;
         requestAnimationFrame(function () {
