@@ -25,6 +25,9 @@ window.addEventListener('keydown', (e) => {
     if (e.key == 'ArrowUp' || e.key == 'w') {
         keyboard.UP = true;
     };
+    if (e.key == ' ') {
+        keyboard.SPACE = true;
+    }
 });
 
 window.addEventListener('keyup', (e) => {
@@ -41,4 +44,7 @@ window.addEventListener('keyup', (e) => {
     if (e.key == 'ArrowUp' || e.key == 'w') {
         keyboard.UP = false;
     };
+    if (e.key == ' ') {
+        keyboard.SPACE = false;
+    }
 });

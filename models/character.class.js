@@ -62,10 +62,6 @@ class Character extends MovableObject {
         'img/1.Sharkie/6.dead/2.Electro_shock/5.png',
         'img/1.Sharkie/6.dead/2.Electro_shock/6.png',
         'img/1.Sharkie/6.dead/2.Electro_shock/7.png',
-        'img/1.Sharkie/6.dead/2.Electro_shock/8.png',
-        'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
-        'img/1.Sharkie/6.dead/2.Electro_shock/10.png',
-        'img/1.Sharkie/6.dead/2.Electro_shock/7.png'
     ];
 
     HURT_POISONED_IMAGES = [
@@ -78,7 +74,24 @@ class Character extends MovableObject {
     HURT_SHOCKED_IMAGES = [
         'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
         'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
-        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png'
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+    ]
+
+    ATTACK_BUBBLE_IMAGES = [
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/1.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/2.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/3.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/4.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/5.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/6.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/7.png',
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png'
     ]
 
     world;
@@ -92,18 +105,18 @@ class Character extends MovableObject {
         this.loadImages(this.DEAD_SHOCKED_IMAGES);
         this.loadImages(this.HURT_SHOCKED_IMAGES);
         this.loadImages(this.HURT_POISONED_IMAGES);
+        this.loadImages(this.ATTACK_BUBBLE_IMAGES)
         this.animate();
+
         this.swimming_sound.volume = 0.7;
     }
 
     addCoin() {
         this.coins++;
-        console.log('collected coins: ', this.coins);
     }
 
     addPoison() {
         this.poisons++;
-        console.log('collected poisons: ', this.poisons);
     }
 
     deathAnimation(obj) {
@@ -131,17 +144,20 @@ class Character extends MovableObject {
     }
 
     hurtAnimation(obj) {
-        setInterval(() => {
-            let timePassed = new Date().getTime() - this.lastHit;
-            timePassed = timePassed / 1000;
-            if (timePassed < 1) {
-                if (obj instanceof Jellyfish) {
-                    this.animateImages(this.HURT_SHOCKED_IMAGES);
-                } else {
-                    this.animateImages(this.HURT_POISONED_IMAGES);
-                }
+        let hurtInterval = setInterval(() => {
+            let timePassed = (new Date().getTime() - this.lastHit) / 1000;
+            let isJellyfish = obj instanceof Jellyfish;
+            timePassed < 1 ? this.world.keyboard.NO_KEY_PRESSED = false : this.world.keyboard.NO_KEY_PRESSED = true;
+            this.animateImages(isJellyfish ? this.HURT_SHOCKED_IMAGES : this.HURT_POISONED_IMAGES);
+            if (isJellyfish) {
+                this.x -= 2;
+                this.x_frame -= 2;
             }
-        }, 200);
+            if (timePassed > 1) {
+                clearInterval(hurtInterval);
+                this.gotHit = false;
+            }
+        }, 500);
     }
 
     drawFrame(ctx) {
@@ -172,15 +188,38 @@ class Character extends MovableObject {
 
     animate() {
         this.move();
+        this.idle();
+        this.swim();
+        this.attack();
+    }
+
+    attack() {
+        setInterval(() => {
+            let isAttacking = this.world.keyboard.SPACE && this.currentImage < this.ATTACK_BUBBLE_IMAGES.length && this.otherDirection == false;
+            if (isAttacking) {
+                this.animateImages(this.ATTACK_BUBBLE_IMAGES);
+            }
+            if (!this.world.keyboard.SPACE) {
+                this.currentImage = 0;
+            }
+        }, 1000 / 60);
+    }
+
+    idle() {
         let idleInterval = setInterval(() => {
             if (this.world.keyboard.NO_KEY_PRESSED) {
                 this.animateImages(this.IDLE_IMAGES);
             }
         }, 220)
         this.intervalIDs.push(idleInterval);
+    }
+
+    swim() {
         let swimInterval = setInterval(() => {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                this.animateImages(this.SWIMMING_IMAGES);
+                if (!this.gotHit) {
+                    this.animateImages(this.SWIMMING_IMAGES);
+                }
             }
         }, 150)
         this.intervalIDs.push(swimInterval);
@@ -201,8 +240,6 @@ class Character extends MovableObject {
         }, 1000 / 60);
         this.intervalIDs.push(moveInterval);
     }
-
-
 
     checkIfInEndSection() {
         if (this.x >= 2220) {

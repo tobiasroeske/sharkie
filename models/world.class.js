@@ -10,6 +10,8 @@ class World {
     poisonbar = new Poisonbar();
     amountCoins = this.level.coins.length;
     amountPoisons = this.level.poisons.length;
+    bubbles = [];
+    lastShot = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -17,19 +19,33 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
     }
 
     setWorld() {
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
+        this.lastShot = new Date().getTime();
         let collisionInterval = setInterval(() => {
             this.getCollisionsWithEnemy(collisionInterval);
             this.getCollisionsWithCollectables(this.level.coins, this.amountCoins, this.coinbar);
             this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
+            this.checkShootBubble();
         }, 200);
+    }
+
+    checkShootBubble() {
+        let currentTime = Date.now();
+        if (currentTime - this.lastShootTime < 1000) {
+            return; 
+        }
+        if (this.keyboard.SPACE && !this.character.otherDirection) {
+            let bubble = new Bubble(this.character.x_frame + 80, this.character.y_frame);
+            this.bubbles.push(bubble);
+            this.lastShootTime = currentTime;
+        }
     }
 
     getCollisionsWithEnemy(interval) {
@@ -69,21 +85,22 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
-
+        // Objects which are static and don't move with camera
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.energybar);
         this.addToMap(this.coinbar);
         this.addToMap(this.poisonbar);
         this.ctx.translate(this.camera_x, 0);
-        
+
         this.addToMap(this.character);
+        this.addObjectsToMap(this.bubbles);
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.poisons);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-        // Objects which are static and don't move with camera
-        
+
+
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
