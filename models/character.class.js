@@ -253,6 +253,7 @@ class Character extends MovableObject {
             this.x += this.speed;
             this.x_frame += this.speed
             this.checkIfInEndSection();
+            this.checkIfInEndSection();
             this.swimming_sound.play();
         }
     }

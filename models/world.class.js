@@ -99,8 +99,6 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-
-
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
