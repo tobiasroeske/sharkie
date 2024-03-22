@@ -10,7 +10,7 @@ class Character extends MovableObject {
     swimmingDown = false;
     lifepoints = 100;
     coins = 0;
-    poisons = 0;
+    poisons = 100;
 
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -91,7 +91,10 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Bubble trap/For Whale/5.png',
         'img/1.Sharkie/4.Attack/Bubble trap/For Whale/6.png',
         'img/1.Sharkie/4.Attack/Bubble trap/For Whale/7.png',
-        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png'
+        'img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png',
+        'img/1.Sharkie/1.IDLE/1.png',
+        'img/1.Sharkie/1.IDLE/2.png',
+        'img/1.Sharkie/1.IDLE/3.png',
     ]
 
     ATTACK_FIN_SLAP_IMAGES = [
@@ -131,9 +134,9 @@ class Character extends MovableObject {
                 pufferfishDistanceBigger ? enemy.isTransforming = true : enemy.isTransforming = false;
                 let distanceIsBigger = distance < 200 && distance >= 0;
                 distanceIsBigger ? enemy.closeToCharacter = true : enemy.closeToCharacter = false;
-            },200)
+            }, 200)
         })
-        
+
     }
 
     addCoin() {
@@ -219,24 +222,15 @@ class Character extends MovableObject {
         //this.finSlap();
     }
 
-    finSlap() {
-        setInterval(() => {
-            let isSlapping = this.world.keyboard.F && this.otherDirection == false;
-            
-            if (isSlapping) {
-                this.animateImages(this.ATTACK_FIN_SLAP_IMAGES);
-            }
-        }, 500);
-    }
 
     bubbleAttack() {
         setInterval(() => {
-            let isAttacking = this.world.keyboard.SPACE && this.currentImage < this.ATTACK_BUBBLE_IMAGES.length && this.otherDirection == false;
-            if (isAttacking && this.poisons.length > 0) {
-                this.animateImages(this.ATTACK_BUBBLE_IMAGES);
+            let isAttacking = this.world.keyboard.SPACE && this.attackCounter < this.ATTACK_BUBBLE_IMAGES.length && this.otherDirection == false;
+            if (isAttacking && this.poisons > 0) {
+                this.attackAnimation(this.ATTACK_BUBBLE_IMAGES);
             }
             if (!this.world.keyboard.SPACE) {
-                this.currentImage = 0;
+                this.attackCounter = 0;
             }
         }, 1000 / 60);
     }

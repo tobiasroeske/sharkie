@@ -1,6 +1,7 @@
 class MovableObject extends DrawableObject {
     speed = 0.8;
     deadCounter = 0;
+    attackCounter = 0;
     lastHit = 0;
     gotHit = false;
     speedY = 0;
@@ -25,6 +26,12 @@ class MovableObject extends DrawableObject {
         } else {
             this.lastHit = new Date().getTime();
         }
+    }
+ 
+    attackAnimation(images) {
+        let path = images[this.attackCounter];
+        this.img = this.imageCache[path];
+        this.attackCounter++;
     }
 
     isHurt(obj) {
