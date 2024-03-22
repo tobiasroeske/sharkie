@@ -94,6 +94,15 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Bubble trap/For Whale/8.png'
     ]
 
+    ATTACK_FIN_SLAP_IMAGES = [
+        'img/1.Sharkie/4.Attack/Fin slap/1.png',
+        'img/1.Sharkie/4.Attack/Fin slap/4.png',
+        'img/1.Sharkie/4.Attack/Fin slap/5.png',
+        'img/1.Sharkie/4.Attack/Fin slap/6.png',
+        'img/1.Sharkie/4.Attack/Fin slap/7.png',
+        'img/1.Sharkie/4.Attack/Fin slap/8.png'
+    ]
+
     world;
     swimming_sound = new Audio('audio/swimming.mp3');
 
@@ -105,10 +114,26 @@ class Character extends MovableObject {
         this.loadImages(this.DEAD_SHOCKED_IMAGES);
         this.loadImages(this.HURT_SHOCKED_IMAGES);
         this.loadImages(this.HURT_POISONED_IMAGES);
-        this.loadImages(this.ATTACK_BUBBLE_IMAGES)
+        this.loadImages(this.ATTACK_BUBBLE_IMAGES);
+        this.loadImages(this.ATTACK_FIN_SLAP_IMAGES);
         this.animate();
+        this.checkIfCloseToEnemy();
 
         this.swimming_sound.volume = 0.7;
+    }
+
+    checkIfCloseToEnemy() {
+        setInterval(() => {
+            this.world.level.enemies.forEach(enemy => {
+                let distance = enemy.x - this.x_frame;
+                let isPufferfish = enemy instanceof Pufferfish;
+                let pufferfishDistanceBigger = isPufferfish && distance < 225 && distance >= 200
+                pufferfishDistanceBigger ? enemy.isTransforming = true : enemy.isTransforming = false;
+                let distanceIsBigger = distance < 200 && distance >= 0;
+                distanceIsBigger ? enemy.closeToCharacter = true : enemy.closeToCharacter = false;
+            },200)
+        })
+        
     }
 
     addCoin() {
@@ -190,13 +215,24 @@ class Character extends MovableObject {
         this.move();
         this.idle();
         this.swim();
-        this.attack();
+        this.bubbleAttack();
+        //this.finSlap();
     }
 
-    attack() {
+    finSlap() {
+        setInterval(() => {
+            let isSlapping = this.world.keyboard.F && this.otherDirection == false;
+            
+            if (isSlapping) {
+                this.animateImages(this.ATTACK_FIN_SLAP_IMAGES);
+            }
+        }, 500);
+    }
+
+    bubbleAttack() {
         setInterval(() => {
             let isAttacking = this.world.keyboard.SPACE && this.currentImage < this.ATTACK_BUBBLE_IMAGES.length && this.otherDirection == false;
-            if (isAttacking) {
+            if (isAttacking && this.poisons.length > 0) {
                 this.animateImages(this.ATTACK_BUBBLE_IMAGES);
             }
             if (!this.world.keyboard.SPACE) {

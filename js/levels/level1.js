@@ -1,10 +1,20 @@
 const level1 = new Level(
     [
-        new Jellyfish(),
-        new Jellyfish(),
-        new Jellyfish(),
-        new Pufferfish(),
-        new Pufferfish(),
+        new Jellyfish(100),
+        new Jellyfish(150),
+        new Jellyfish(400),
+        new Jellyfish(600),
+        new Jellyfish(800),
+        new Jellyfish(1100),
+        new Jellyfish(1150),
+        new Jellyfish(1400),
+        new Jellyfish(1300),
+        new Pufferfish(500, 50),
+        new Pufferfish(500, 200),
+        new Pufferfish(1200, 75),
+        new Pufferfish(1200, 300),
+        new Pufferfish(1400, 40),
+        new Pufferfish(1400, 120),
         new Endboss()
     ],
     [
@@ -51,4 +61,6 @@ const level1 = new Level(
         new Poison(),
         new Poison()
     ]
+
+
 )

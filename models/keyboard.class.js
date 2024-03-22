@@ -5,4 +5,5 @@ class Keyboard {
     DOWN = false;
     SPACE = false;
     NO_KEY_PRESSED = true;
+    F = false;
 }

@@ -33,7 +33,21 @@ class World {
             this.getCollisionsWithCollectables(this.level.coins, this.amountCoins, this.coinbar);
             this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
             this.checkShootBubble();
+            this.getCollisionWithBubble();
         }, 200);
+    }
+
+    getCollisionWithBubble() {
+        this.level.enemies.forEach(enemy => {
+            this.bubbles.forEach(bubble => {
+                if (bubble.isColliding(enemy)) {
+                    enemy.hit();
+                    let i = this.bubbles.indexOf(bubble);
+                    this.bubbles.splice(i, 1);
+                    console.log(enemy.lifepoints);
+                }
+            })
+        })
     }
 
     checkShootBubble() {
@@ -41,10 +55,19 @@ class World {
         if (currentTime - this.lastShootTime < 1000) {
             return; 
         }
-        if (this.keyboard.SPACE && !this.character.otherDirection) {
+        if (this.keyboard.SPACE && !this.character.otherDirection && this.character.poisons > 0) {
             let bubble = new Bubble(this.character.x_frame + 80, this.character.y_frame);
+            this.updateStatusBar(this.poisonbar);
             this.bubbles.push(bubble);
             this.lastShootTime = currentTime;
+        }
+    }
+
+    updateStatusBar(bar) {
+        if (this.keyboard.SPACE) {
+            this.character.poisons--;
+            let percentage = 100 / this.amountPoisons * this.character.poisons;
+            bar.getPercentage(percentage);
         }
     }
 

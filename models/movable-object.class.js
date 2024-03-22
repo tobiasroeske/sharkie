@@ -17,8 +17,6 @@ class MovableObject extends DrawableObject {
         }, 1000 / 25)
     }
 
-
-
     hit() {
         this.gotHit = true;
         this.lifepoints -= 5;
@@ -28,8 +26,6 @@ class MovableObject extends DrawableObject {
             this.lastHit = new Date().getTime();
         }
     }
-
-
 
     isHurt(obj) {
         this.hit();
@@ -42,13 +38,4 @@ class MovableObject extends DrawableObject {
             this.x < obj.x + obj.width &&
             this.y < obj.y + obj.height
     }
-
-
-    //Junus Version
-    // isColliding(obj) {
-    //     return (this.x + this.width) >= obj.x &&
-    //         this.x <= (obj.x + obj.width) &&
-    //         (this.y + this.offsetY + this.height) >= obj.y &&
-    //         (this.y + this.offsetY) <= (obj.y + obj.height)
-    // }
 }
