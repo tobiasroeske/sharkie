@@ -39,12 +39,12 @@ class World {
 
     getCollisionWithBubble() {
         this.level.enemies.forEach(enemy => {
+            let isPufferfish = enemy instanceof Pufferfish;
             this.bubbles.forEach(bubble => {
-                if (bubble.isColliding(enemy)) {
+                if (bubble.isColliding(enemy) && !isPufferfish) {
                     enemy.hit();
                     let i = this.bubbles.indexOf(bubble);
                     this.bubbles.splice(i, 1);
-                    console.log(enemy.lifepoints);
                 }
             })
         })
@@ -53,7 +53,7 @@ class World {
     checkShootBubble() {
         let currentTime = Date.now();
         if (currentTime - this.lastShootTime < 1000) {
-            return; 
+            return;
         }
         if (this.keyboard.SPACE && !this.character.otherDirection && this.character.poisons > 0) {
             let bubble = new Bubble(this.character.x_frame + 80, this.character.y_frame);
@@ -73,13 +73,18 @@ class World {
 
     getCollisionsWithEnemy(interval) {
         this.level.enemies.forEach(enemy => {
+            let isJellyfish = enemy instanceof Jellyfish;
             if (this.character.isColliding(enemy)) {
-                this.character.isHurt(enemy);
-                this.energybar.getPercentage(this.character.lifepoints);
-                if (this.character.isDead()) {
-                    clearInterval(interval);
-                    this.character.lifepoints = 0;
-                    this.character.deathAnimation(enemy);
+                if (this.character.isAttacking && !isJellyfish) {
+                    this.character.attack(enemy)
+                } else {
+                    this.character.isHurt(enemy);
+                    this.energybar.getPercentage(this.character.lifepoints);
+                    if (this.character.isDead()) {
+                        clearInterval(interval);
+                        this.character.lifepoints = 0;
+                        this.character.deathAnimation(enemy);
+                    }
                 }
             }
         })
@@ -99,7 +104,6 @@ class World {
                     let percentage = 100 / amount * this.character.poisons
                     bar.getPercentage(percentage);
                 }
-
             }
         })
     }
@@ -122,7 +126,6 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-        
         let self = this;
         requestAnimationFrame(function () {
             self.draw();

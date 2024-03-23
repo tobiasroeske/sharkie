@@ -10,7 +10,7 @@ class Character extends MovableObject {
     swimmingDown = false;
     lifepoints = 100;
     coins = 0;
-    poisons = 100;
+    poisons = 0;
 
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -99,11 +99,13 @@ class Character extends MovableObject {
 
     ATTACK_FIN_SLAP_IMAGES = [
         'img/1.Sharkie/4.Attack/Fin slap/1.png',
+        'img/1.Sharkie/4.Attack/Fin slap/2.png',
+        'img/1.Sharkie/4.Attack/Fin slap/3.png',
         'img/1.Sharkie/4.Attack/Fin slap/4.png',
         'img/1.Sharkie/4.Attack/Fin slap/5.png',
         'img/1.Sharkie/4.Attack/Fin slap/6.png',
         'img/1.Sharkie/4.Attack/Fin slap/7.png',
-        'img/1.Sharkie/4.Attack/Fin slap/8.png'
+        'img/1.Sharkie/4.Attack/Fin slap/8.png',
     ]
 
     world;
@@ -219,9 +221,28 @@ class Character extends MovableObject {
         this.idle();
         this.swim();
         this.bubbleAttack();
-        //this.finSlap();
+        this.finSlap();
     }
 
+    finSlap() {
+        setInterval(() => {    
+            let finSlap = this.world.keyboard.F && this.attackCounter < this.ATTACK_FIN_SLAP_IMAGES.length
+            if (finSlap) {
+                this.isAttacking = true;
+                setTimeout(() => {
+                    this.isAttacking = false;
+                }, 1500) 
+                this.attackAnimation(this.ATTACK_FIN_SLAP_IMAGES);
+                this.x += 6;
+                this.x_frame += 6;    
+            } 
+        }, 1000 / 60)
+    }
+
+    setAttackTimer() {
+        this.lastAttack = Date.now();
+        this.isAttacking = true;
+    }
 
     bubbleAttack() {
         setInterval(() => {
@@ -229,7 +250,7 @@ class Character extends MovableObject {
             if (isAttacking && this.poisons > 0) {
                 this.attackAnimation(this.ATTACK_BUBBLE_IMAGES);
             }
-            if (!this.world.keyboard.SPACE) {
+            if (!this.world.keyboard.SPACE && !this.world.keyboard.F) {
                 this.attackCounter = 0;
             }
         }, 1000 / 60);

@@ -27,10 +27,10 @@ window.addEventListener('keydown', (e) => {
     };
     if (e.key == ' ') {
         keyboard.SPACE = true;
-    }
-    // if (e.key == 'f') {
-    //     keyboard.F = true;
-    // };
+    };
+    if (e.key == 'f') {
+        keyboard.F = true;
+    };
 });
 
 window.addEventListener('keyup', (e) => {
@@ -50,7 +50,7 @@ window.addEventListener('keyup', (e) => {
     if (e.key == ' ') {
         keyboard.SPACE = false;
     };
-    // if (e.key == 'f') {
-    //     keyboard.F = false;
-    // }
+    if (e.key == 'f') {
+        keyboard.F = false;
+    };
 });

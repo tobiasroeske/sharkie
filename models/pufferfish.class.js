@@ -5,6 +5,7 @@ class Pufferfish extends Enemy {
     speed = 0.8 + Math.random() * 0.25;
     isTransforming = false;
     closeToCharacter = false;
+    lifepoints = 5;
     IMAGES_SWIMMING = [
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim2.png',
@@ -29,11 +30,18 @@ class Pufferfish extends Enemy {
         'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim5.png',
     ]
 
+    DEAD_IMAGES = [
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png'
+    ]
+
     constructor(x, y) {
         super().loadImage('img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png');
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.TRANSFORM_IMAGES);
         this.loadImages(this.BUBBLESWIM_IMAGES);
+        this.loadImages(this.DEAD_IMAGES);
         this.animate();
         this.x = x;
         this.y = y + Math.random() * 100;
@@ -48,12 +56,17 @@ class Pufferfish extends Enemy {
     animate() {
         this.moveLeft();
         setInterval(() => {
-            if (this.isTransforming) {
-                this.animateImages(this.TRANSFORM_IMAGES);
-            } else if (this.closeToCharacter) {
-                this.animateImages(this.BUBBLESWIM_IMAGES);
+            if (this.isDead()) {
+                this.animateImages(this.DEAD_IMAGES);
+                this.applyGravity();
             } else {
-                this.animateImages(this.IMAGES_SWIMMING);
+                if (this.isTransforming) {
+                    this.animateImages(this.TRANSFORM_IMAGES);
+                } else if (this.closeToCharacter) {
+                    this.animateImages(this.BUBBLESWIM_IMAGES);
+                } else {
+                    this.animateImages(this.IMAGES_SWIMMING);
+                }
             }
         }, 220)
     }

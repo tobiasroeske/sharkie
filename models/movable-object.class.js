@@ -3,9 +3,11 @@ class MovableObject extends DrawableObject {
     deadCounter = 0;
     attackCounter = 0;
     lastHit = 0;
+    lastAttack = 0;
     gotHit = false;
     speedY = 0;
     acceleration = 1;
+    isAttacking = false;
 
     isDead() {
         return this.lifepoints == 0;
@@ -25,6 +27,13 @@ class MovableObject extends DrawableObject {
             this.lifepoints = 0;
         } else {
             this.lastHit = new Date().getTime();
+        }
+    }
+
+    attack(obj) {
+        let isJellyfish = obj instanceof Jellyfish;
+        if (!isJellyfish) {
+            obj.hit();
         }
     }
  
