@@ -1,8 +1,14 @@
 class Endboss extends MovableObject {
-    x = 2350;
+    x = 4000 //2350;
     y = -50;
+    speed = 5;
     width = 350;
     height = 450;
+    firstContact = false;
+    introDone = false;
+    movingUp = true;
+    movingLeft = true;
+    lifepoints = 30;
 
     FLOATING_IMAGES = [
         'img/2.Enemy/3 Final Enemy/2.floating/1.png',
@@ -33,16 +39,132 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3 Final Enemy/1.Introduce/10.png'
     ]
 
+    ATTACK_IMAGES = [
+        'img/2.Enemy/3 Final Enemy/Attack/1.png',
+        'img/2.Enemy/3 Final Enemy/Attack/2.png',
+        'img/2.Enemy/3 Final Enemy/Attack/3.png',
+        'img/2.Enemy/3 Final Enemy/Attack/4.png',
+        'img/2.Enemy/3 Final Enemy/Attack/5.png',
+        'img/2.Enemy/3 Final Enemy/Attack/6.png',
+    ]
+
+    HURT_IMAGES = [
+        'img/2.Enemy/3 Final Enemy/Hurt/1.png',
+        'img/2.Enemy/3 Final Enemy/Hurt/2.png',
+        'img/2.Enemy/3 Final Enemy/Hurt/3.png',
+        'img/2.Enemy/3 Final Enemy/Hurt/4.png',
+    ]
+
+    DEAD_IMAGES = [
+        'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 6.png',
+        'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 7.png',
+        'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 8.png',
+        'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png',
+        'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png',
+    ]
+
     constructor() {
         super().loadImage(this.FLOATING_IMAGES[0]);
         this.loadImages(this.FLOATING_IMAGES);
+        this.loadImages(this.INTRO_IMAGES);
+        this.loadImages(this.ATTACK_IMAGES);
+        this.loadImages(this.HURT_IMAGES);
+        this.loadImages(this.DEAD_IMAGES);
+        this.speed = this.speed + Math.random() * 1.25;
         this.animate();
     }
 
     animate() {
+        let i;
         setInterval(() => {
-            this.animateImages(this.FLOATING_IMAGES);
-        }, 150)
+            if (i < 10) {
+                this.animateIntro();
+                i++;
+            } else if (i >= 10 && this.introDone) {
+                this.move();
+                this.hurtAnimation();
+                this.deadAnmation();
+            }
+            if (this.firstContact && !this.introDone) {
+                i = 0;
+                this.restartIntro();
+            }
+        }, 125)
+    }
+
+    deadAnmation() {
+        if (this.isDead()) {
+            if (this.deadCounter < this.DEAD_IMAGES.length) {
+                this.animateImages(this.DEAD_IMAGES);
+                this.deadCounter++;
+            } else {
+                this.loadImage(this.DEAD_IMAGES[4]);
+                this.y -= 20;
+            }
+        } 
+    }
+
+    hurtAnimation() {
+        let timePassed = (new Date().getTime() - this.lastHit) / 1000;
+        if (timePassed < 1) {
+            this.animateImages(this.HURT_IMAGES);
+        }
+    }
+
+    move() {
+        if (!this.isDead()) {
+            let y_end = this.y + Math.random() * -140
+            if (this.movingUp && this.movingLeft) {
+                this.moveUp(y_end);
+            } else if (this.movingLeft) {
+                this.moveLeft()
+            } else if (!this.movingUp) {
+                this.moveDown();
+            } else if (!this.movingLeft) {
+                this.moveRight();
+            }
+        }
+    }
+
+    moveLeft() {
+        this.x -= this.speed + 10;
+        this.animateImages(this.ATTACK_IMAGES);
+        if (this.x <= 2050) {
+            this.movingLeft = false;
+        }
+    }
+
+    moveRight() {
+        this.x += this.speed + 10;
+        if (this.x >= 2350) {
+            this.movingLeft = true;
+        }
+    }
+
+    moveUp(y_end) {
+        this.y -= this.speed
+        this.animateImages(this.FLOATING_IMAGES);
+        if (this.y <= -140 || this.y <= y_end) {
+            this.movingUp = false;
+        }
+    }
+
+    moveDown() {
+        this.y += this.speed;
+        this.animateImages(this.FLOATING_IMAGES);
+        if (this.y >= 90) {
+            this.movingUp = true;
+        }
+    }
+
+    animateIntro() {
+        this.x = 2350;
+        this.animateImages(this.INTRO_IMAGES)
+    }
+
+    restartIntro() {
+        this.firstContact = false;
+        this.introDone = true;
     }
 
     drawFrame(ctx) {

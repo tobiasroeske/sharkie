@@ -35,7 +35,7 @@ class Jellyfish extends Enemy {
         this.loadImages(this.DANGEROUS_IMAGES);
         this.speed = this.speed + Math.random() * 0.25;
         this.animate();
-        this.x = x + 300 + Math.random() * 300;
+        this.x = x + 300 + Math.random() * 300; 
     }
 
     moveDown() {

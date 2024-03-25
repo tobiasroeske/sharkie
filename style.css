@@ -1,9 +1,113 @@
+@font-face {
+  font-family: "luckiestGuy";
+  src: url("img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url("img/underwater_background.jpg");
+  background-position: center;
+  font-family: "luckiestGuy", "Arial", "Helvetica", "Sans-serif";
+  gap: 32px;
+  margin: 0;
+}
+
+h1 {
+  font-size: 112px;
+  color: #e1e1e1;
+  letter-spacing: 5px;
+  text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  width: 50%;
+}
+
+button {
+  cursor: pointer;
+  background-color: #0359a0;
+  outline: none;
+  border-style: none;
+  padding: 21px 16px;
+  height: 64px;
+  border-radius: 18px;
+  color: #e1e1e1;
+  letter-spacing: 5px;
+  text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: "luckiestGuy", "Arial", "Helvetica", "Sans-serif";
+  font-size: 32px;
+  transition: all 0.125s ease;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: #0b1046;
+  border: 3px solid #e1e1e1;
+  transform: scale(1.02);
+}
+
+.sharkie {
+  transform: rotate(-30deg);
+  width: 50%;
+}
+
+.loading-screen {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #e1e1e1;
+  letter-spacing: 5px;
+  text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 32px;
+}
+
+.progress {
+  height: 48px;
+  width: 70%;
+  background-color: transparent;
+  border-radius: 18px;
+  border: 3px solid #0b1046;
+  position: relative;
+}
+
+.progressbar {
+    position: absolute;
+    background-color: #e1e1e1;
+    width: 0%;
+    height: 48px;
+    border-radius: 18px;
 }
 
 canvas {
-    background-color: black;
+  background-color: black;
+}
+
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.d-none {
+  display: none !important;
 }

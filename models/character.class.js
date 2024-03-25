@@ -1,9 +1,9 @@
 class Character extends MovableObject {
     y = 180;
-    x_frame = this.x;
-    y_frame = this.y + this.height / 2 - 10;
-    width_frame = this.width - 5;
-    height_frame = this.height / 2 - 15;
+    x_frame = this.x + 25;
+    y_frame = this.y + this.height / 2 - 5;
+    width_frame = this.width - 50;
+    height_frame = this.height / 2 - 25;
     speed = 3;
     otherDirection = false;
     swimmingUp = false;
@@ -11,6 +11,7 @@ class Character extends MovableObject {
     lifepoints = 100;
     coins = 0;
     poisons = 0;
+    autoSwim = false;
 
     IDLE_IMAGES = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -123,7 +124,6 @@ class Character extends MovableObject {
         this.loadImages(this.ATTACK_FIN_SLAP_IMAGES);
         this.animate();
         this.checkIfCloseToEnemy();
-
         this.swimming_sound.volume = 0.7;
     }
 
@@ -187,14 +187,14 @@ class Character extends MovableObject {
                 clearInterval(hurtInterval);
                 this.gotHit = false;
             }
-        }, 500);
+        }, 200);
     }
 
     drawFrame(ctx) {
         ctx.beginPath();
         ctx.lineWidth = "5";
         ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y + this.height / 2 - 10, this.width - 5, this.height / 2 - 15);
+        ctx.rect(this.x_frame, this.y_frame, this.width_frame, this.height_frame);
         ctx.stroke();
     }
 
@@ -225,23 +225,18 @@ class Character extends MovableObject {
     }
 
     finSlap() {
-        setInterval(() => {    
+        setInterval(() => {
             let finSlap = this.world.keyboard.F && this.attackCounter < this.ATTACK_FIN_SLAP_IMAGES.length
             if (finSlap) {
                 this.isAttacking = true;
                 setTimeout(() => {
                     this.isAttacking = false;
-                }, 1500) 
+                }, 1500)
                 this.attackAnimation(this.ATTACK_FIN_SLAP_IMAGES);
                 this.x += 6;
-                this.x_frame += 6;    
-            } 
+                this.x_frame += 6;
+            }
         }, 1000 / 60)
-    }
-
-    setAttackTimer() {
-        this.lastAttack = Date.now();
-        this.isAttacking = true;
     }
 
     bubbleAttack() {
@@ -278,7 +273,9 @@ class Character extends MovableObject {
 
     move() {
         let moveInterval = setInterval(() => {
+            
             this.swimming_sound.pause();
+            this.autoSwimRight();
             this.moveRight();
             this.moveLeft();
             this.moveUp();
@@ -292,9 +289,22 @@ class Character extends MovableObject {
         this.intervalIDs.push(moveInterval);
     }
 
-    checkIfInEndSection() {
+    autoSwimRight() {
+        this.checkPosition();
+        if (this.autoSwim && !this.world.level.inEndSection && this.world.keyboard.NO_KEY_PRESSED) {
+            this.x += this.speed;
+            this.x_frame += this.speed;
+        }
+    }
+
+    checkPosition() {
+        if (this.x > 1830 && this.x < 2200) {
+            this.autoSwim = true;
+        } 
         if (this.x >= 2220) {
+            this.autoSwim = false;
             this.world.level.inEndSection = true;
+            this.world.level.enemies[this.world.level.enemies.length - 1].firstContact = true;
         }
     }
 
@@ -303,7 +313,6 @@ class Character extends MovableObject {
             this.otherDirection = false;
             this.x += this.speed;
             this.x_frame += this.speed
-            this.checkIfInEndSection();
             this.swimming_sound.play();
         }
     }

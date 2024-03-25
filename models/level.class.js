@@ -1,8 +1,8 @@
 class Level {
-    enemies;
-    backgrounds;
-    coins;
-    poisons;
+    enemies = []
+    backgrounds = []
+    coins = []
+    poisons = []
     level_end_x = 2600;
     level_end_x_left = -80
     level_end_y = 350;

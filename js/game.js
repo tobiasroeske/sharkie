@@ -6,8 +6,30 @@ background_sound.loop = true;
 
 function init() {
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
-    
+}
+
+function startGame() {
+    loadLevel();
+    generateLoadingScreen();
+    setTimeout(() => {
+        world = new World(canvas, keyboard);
+        document.getElementById('canvas').classList.remove('d-none');
+    }, 1000)
+}
+
+function generateLoadingScreen() {
+    document.getElementById('menu').classList.add('d-none');
+    document.getElementById('loadingScreen').classList.remove('d-none');
+    let progressbar = document.getElementById('progressbar');
+    let width = 0;
+    setInterval(() => {
+        width += 5;
+        progressbar.style.width = `${width}%`;
+        if (width >= 100) {
+            width = 100;
+            document.getElementById('loadingScreen').classList.add('d-none');
+        }
+    }, 50)
 }
 
 window.addEventListener('keydown', (e) => {
