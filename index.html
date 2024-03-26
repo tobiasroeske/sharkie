@@ -37,21 +37,82 @@
         <img src="img/sharkie_frontpage.png" alt="" class="sharkie">
         <div class="menu-buttons">
             <button onclick="startGame()">START</button>
-            <button>Instructions</button>
+            <button onclick="openInstructions()">Instructions</button>
         </div>
     </div>
+
+    <div class="first-time d-none" id="firstTime">
+        <span>
+            It seems like you're about to play Sharkie for the first time. Would you like to read the instructions
+            first, or
+            do you want to dive right in and start playing?
+        </span>
+        <div class="choose-btns">
+            <button onclick="startGame()">START</button>
+            <button onclick="openInstructions()">Instructions</button>
+        </div>
+    </div>
+
+
+    <div class="instructions d-none" id="instructions">
+        <button class="close-icon" onclick="closeInstructions()">x</button>
+        <div class="description" id="description">
+            <div class="intro-text" id="introText">
+
+            </div>
+            <div class="key-infos">
+                <div class="move-description">
+                    <h3>MOVE</h3>
+                    <div>
+                        <button class="no-btn">W</button>
+                    </div>
+                    <div>
+                        <button class="no-btn">A</button>
+                        <button class="no-btn">S</button>
+                        <button class="no-btn">D</button>
+                    </div>
+                </div>
+                <div class="attack-descriptions">
+                    <div class="attack-btns">
+                        <h3>Bubbleshot</h3>
+                        <button class="no-btn">Space</button>
+                    </div>
+                    <div class="attack-btns">
+                        <h3>Finslap</h3>
+                        <button class="no-btn">F</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="loading-screen d-none" id="loadingScreen">
-        <div class="progress" >
+        <div class="progress">
             <div class="progressbar" id="progressbar"></div>
         </div>
         <p>LOADING ...</p>
     </div>
-    
-    <div class="canvas-container"></div>
-        <canvas width="720" height="480" id="canvas" class="d-none"></canvas>
+
+    <div class="canvas-container d-none" id="canvasContainer">
+        <canvas width="720" height="480" id="canvas"></canvas>
+        <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn">fullscreen</button>
+        <img src="img/fullscreen.png" alt="" class="fullscreen-icon d-none" onclick="toggleFullscreen()" id="fullscreenIcon">
+        <div class="touch-container">
+            <div class="touch-move">
+                <div class="touch-btn" id="up"><img src="img/caret-up-fill.svg" alt=""></div>
+                <div class="left-right">
+                    <div class="touch-btn" id="left"><img src="img/caret-left-fill.svg" alt=""></div>
+                    <div class="touch-btn" id="right"><img src="img/caret-right-fill.svg" alt=""></div>
+                </div>
+                <div class="touch-btn" id="down"><img src="img/caret-down-fill.svg" alt=""></div>
+            </div>
+            <div class="attack-touch">
+                <div class="touch-btn attack-btn" id="bubbleAttack">Bubble</div>
+                <div class="touch-btn attack-btn" id="finslap">Finslap</div>
+            </div>
+        </div>
     </div>
-
-
 </body>
 
 </html>
