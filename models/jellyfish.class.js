@@ -1,4 +1,5 @@
 class Jellyfish extends Enemy {
+    
     y = Math.random() * 300
     width = 50;
     height = 75;
@@ -7,37 +8,10 @@ class Jellyfish extends Enemy {
     acceleration = 0.2;
     closeToCharacter = false;
 
-    IMAGES_SWIMMING = [
-        'img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png',
-        'img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png',
-        'img/2.Enemy/2 Jelly fish/Regular damage/Lila 3.png',
-        'img/2.Enemy/2 Jelly fish/Regular damage/Lila 4.png'
-    ];
-
-    DEAD_IMAGES = [
-        'img/2.Enemy/2 Jelly fish/Dead/Lila/L1.png',
-        'img/2.Enemy/2 Jelly fish/Dead/Lila/L2.png',
-        'img/2.Enemy/2 Jelly fish/Dead/Lila/L3.png',
-        'img/2.Enemy/2 Jelly fish/Dead/Lila/L4.png'
-    ]
-
-    DANGEROUS_IMAGES = [
-        'img/2.Enemy/2 Jelly fish/S｣per dangerous/Pink 1.png',
-        'img/2.Enemy/2 Jelly fish/S｣per dangerous/Pink 2.png',
-        'img/2.Enemy/2 Jelly fish/S｣per dangerous/Pink 3.png',
-        'img/2.Enemy/2 Jelly fish/S｣per dangerous/Pink 4.png'
-    ]
-
-    constructor(x) {
-        super().loadImage('img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png');
-        this.loadImages(this.IMAGES_SWIMMING);
-        this.loadImages(this.DEAD_IMAGES);
-        this.loadImages(this.DANGEROUS_IMAGES);
-        this.speed = this.speed + Math.random() * 0.25;
-        this.animate();
-        this.x = x + 300 + Math.random() * 300; 
-    }
-
+    /**
+     * moves the jellyfish downwards and once it reaches the canvas bottom it stops the interval
+     * and moves it upwards
+     */
     moveDown() {
         let myInterval = setInterval(() => {
             this.y += this.speed;
@@ -48,6 +22,10 @@ class Jellyfish extends Enemy {
         }, 1000 / 60);
     }
 
+    /**
+     * moves the jellyfish upwards and once it reaches the canvas bottom it stops the interval
+     * and moves it downwards
+     */
     moveUp() {
         let myInterval = setInterval(() => {
             this.y -= this.speed;
@@ -58,6 +36,10 @@ class Jellyfish extends Enemy {
         }, 1000 / 60)
     }
 
+    /**
+     * gets a random number between 0 and 10 and depending on that number the 
+     * Jellyfish starts moving upwards or downwards
+     */
     move() {
         let randomNumber = Math.floor(Math.random() * 11);
         if (randomNumber >= 5) {
@@ -67,6 +49,10 @@ class Jellyfish extends Enemy {
         }
     }
 
+    /**
+     * animates all the movents and applies gravity to the jellyfish once it has died
+     * to move it out of the canvas
+     */
     animate() {
         this.move();
         setInterval(() => {

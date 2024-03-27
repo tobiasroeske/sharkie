@@ -74,6 +74,10 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
+    /**
+     * animates either the intro, the movement, the hurt or death animation
+     * once the character is close to the endsection it restarts the intro animation
+     */
     animate() {
         let i;
         setInterval(() => {
@@ -92,6 +96,9 @@ class Endboss extends MovableObject {
         }, 125)
     }
 
+    /**
+     * show the dead animation, once the animation ran once it moves the endboss out of the canvas
+     */
     deadAnmation() {
         if (this.isDead()) {
             if (this.deadCounter < this.DEAD_IMAGES.length) {
@@ -104,6 +111,9 @@ class Endboss extends MovableObject {
         } 
     }
 
+    /**
+     * displays the hurt animation, after 1 second it stops
+     */
     hurtAnimation() {
         let timePassed = (new Date().getTime() - this.lastHit) / 1000;
         if (timePassed < 1) {
@@ -111,6 +121,10 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * checks which direction the endboss is moving and changes the depending on that the direction. 
+     * to have the movements more random it sets a random y coordinate. So the character moves left more randomly
+     */
     move() {
         if (!this.isDead()) {
             let y_end = this.y + Math.random() * -140
@@ -126,6 +140,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * moves the endboss to the left
+     */
     moveLeft() {
         this.x -= this.speed + 10;
         this.animateImages(this.ATTACK_IMAGES);
@@ -134,6 +151,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * moves the endboss to the right
+     */
     moveRight() {
         this.x += this.speed + 10;
         if (this.x >= 2350) {
@@ -141,6 +161,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * moves the endboss up
+     */
     moveUp(y_end) {
         this.y -= this.speed
         this.animateImages(this.FLOATING_IMAGES);
@@ -149,6 +172,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * moves the endboss down
+     */
     moveDown() {
         this.y += this.speed;
         this.animateImages(this.FLOATING_IMAGES);
@@ -157,21 +183,20 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * animates the intro sequence
+     */
     animateIntro() {
         this.x = 2350;
         this.animateImages(this.INTRO_IMAGES)
     }
 
+    /**
+     * restarts the intro once the character is close
+     */
     restartIntro() {
         this.firstContact = false;
         this.introDone = true;
     }
 
-    drawFrame(ctx) {
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y + this.height / 3, this.width, this.height / 2);
-        ctx.stroke();
-    }
 }

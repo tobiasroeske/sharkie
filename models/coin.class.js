@@ -1,5 +1,4 @@
 class Coin extends CollectableObject {
-    sound = new Audio('audio/coin_collected.mp3');
 
     IMAGES = [
         'img/4. Marcadores/1. Coins/1.png',
@@ -8,10 +7,11 @@ class Coin extends CollectableObject {
         'img/4. Marcadores/1. Coins/4.png',
     ];
 
-    constructor() {
+    constructor(x) {
         super();
         this.loadImage(this.IMAGES[0]);
         this.loadImages(this.IMAGES);
         this.animate();
+        this.x = x;
     }
 }

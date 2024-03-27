@@ -4,6 +4,12 @@ class Statusbar extends DrawableObject {
     width = 200;
     height = 50;
 
+    /**
+     * calculates how many percent of collectables or lifepoints are already used and displays
+     * it in the statusbar
+     * 
+     * @param {number} percentage 
+     */
     getPercentage(percentage) {
         let index = Math.round(percentage / 20);
         if (index >= 5) {

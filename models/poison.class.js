@@ -10,11 +10,12 @@ class Poison extends CollectableObject {
         'img/4. Marcadores/Posiขn/Animada/8.png'
     ];
 
-    constructor() {
+    constructor(x) {
         super();
         this.loadImage(this.IMAGES[0]);
         this.loadImages(this.IMAGES);
         this.height = 50;
+        this.x = x
         this.animate();
     }
 }
