@@ -33,6 +33,20 @@ body {
   outline: none;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 h1 {
   font-size: 112px;
   color: #e1e1e1;
@@ -40,6 +54,11 @@ h1 {
   text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
   margin-block-start: 0;
   margin-block-end: 0;
+}
+
+h2 {
+  font-size: 64px;
+  margin:0;
 }
 
 .menu {
@@ -58,19 +77,21 @@ h1 {
 }
 
 button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   background-color: #0359a0;
   outline: none;
   border-style: none;
   padding: 21px 16px;
-  height: 64px;
   border-radius: 18px;
   color: #e1e1e1;
   letter-spacing: 5px;
   text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
   font-family: "luckiestGuy", "Arial", "Helvetica", "Sans-serif";
   font-size: 32px;
-
+  border: 3px solid #0359a0;
   text-transform: uppercase;
 }
 
@@ -114,10 +135,12 @@ button:hover {
   border-radius: 18px;
 }
 
-.first-time {
+.first-time,
+.no-landscape, .endscreen {
   display: flex;
   flex-direction: column;
   width: 65%;
+  
   font-size: 24px;
   color: #e1e1e1;
   background-color: #0b1046;
@@ -137,30 +160,31 @@ button:hover {
 }
 
 .instructions {
-  background-image: url("img/tressure_map.png");
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
+  padding: 48px 32px;
   width: 70%;
-  height: 65vh;
+  height: 55vh;
+  max-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  gap: 16px;
+  font-size: 24px;
+  color: #e1e1e1;
+  background: #0b1046;
+  border-radius: 20px;
+  border: solid 5px #e1e1e1;
 }
 
 .close-icon {
   position: absolute;
-  left: 0;
-  left: 32px;
-  top: 56px;
+  right: 32px;
+  top: 32px;
 }
 
 .intro-text {
-  margin-top: 16px;
   overflow: auto;
-  height: 200px;
+  width: 100%;
+  max-height: 250px;
   letter-spacing: 2px;
   font-size: 22px;
   -ms-overflow-style: none; /* IE and Edge */
@@ -176,18 +200,21 @@ button:hover {
 }
 
 .description {
-  width: 60%;
-  margin-top: 72px;
+  width: 72%;
+  height: 100%;
+  justify-content: space-between;
   font-size: 24px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  gap: 24px;
 }
 
 .key-infos {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 16px;
+  height: 30%;
 }
 
 .move-description {
@@ -196,6 +223,11 @@ button:hover {
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
 }
 
 .attack-descriptions {
@@ -270,8 +302,8 @@ canvas {
 }
 
 .touch-btn {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   background-color: #e1e1e1;
   opacity: 0.6;
   border-radius: 50%;
@@ -293,13 +325,159 @@ canvas {
   padding: 4px 12px;
 }
 
+.move-btn {
+  cursor: pointer;
+  background-color: #0359a0;
+  outline: none;
+  border-style: none;
+  padding: 21px 16px;
+  height: 64px;
+  border-radius: 18px;
+  color: #e1e1e1;
+  letter-spacing: 5px;
+  text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: "luckiestGuy", "Arial", "Helvetica", "Sans-serif";
+  font-size: 32px;
+  text-transform: uppercase;
+}
+
 .d-none {
   display: none !important;
+}
+
+@media only screen and (max-width: 950px) {
+  .description {
+    width: 80%;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  .move-btn {
+    /* height: 48px; */
+    font-size: 24px;
+  }
+
+  .close-icon {
+    font-size: 24px;
+    /* height: 48px;
+    width: 48px; */
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  .intro-text {
+    font-size: 18px;
+  }
 }
 
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;
+  }
+  .description {
+    width: 90%;
+  }
+
+  .intro-text {
+    font-size: 16px;
+  }
+
+  .close-icon {
+    font-size: 20px;
+    height: 32px;
+    width: 32px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    top: 24px;
+    right: 24px;
+  }
+
+  .move-btn {
+    font-size: 20px;
+    height: 32px;
+    padding: 8px 12px;
+    border-radius: 12px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .instructions {
+    width: 80%;
+    padding: 24px 24px;
+  }
+
+  .intro-text {
+    font-size: 14px;
+  }
+
+  .row {
+    gap: 4px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-height: 780px) {
+  /* h1 {
+    display: none;
+  } */
+
+  .fullscreen-btn {
+    display: none;
+  }
+
+  .fullscreen-icon {
+    display: block !important;
+  }
+}
+
+@media only screen and (max-height: 510px) {
+  .instructions {
+    min-height: 60vh;
+    padding: 24px 24px;
+  }
+
+  .intro-text {
+    font-size: 14px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  .move-btn {
+    font-size: 20px;
+    height: 32px;
+    padding: 8px 12px;
+    border-radius: 12px;
+  }
+
+  .close-icon {
+    font-size: 20px;
+    height: 32px;
+    width: 32px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    top: 24px;
+    right: 24px;
+  }
+
+  h2 {
+    font-size: 40px;
+  }
+
+  .endscreen {
+    font-size: 18px;
+    width: 85%;
+    gap: 8px;
   }
 }
 
@@ -313,6 +491,6 @@ canvas {
   }
 
   h1 {
-    display: none;
+    font-size: 56px;
   }
 }

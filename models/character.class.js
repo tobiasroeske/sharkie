@@ -10,7 +10,7 @@ class Character extends MovableObject {
     swimmingDown = false;
     lifepoints = 100;
     coins = 0;
-    poisons = 0;
+    poisons = 100;
     autoSwim = false;
 
     IDLE_IMAGES = [
@@ -273,8 +273,8 @@ class Character extends MovableObject {
 
     move() {
         let moveInterval = setInterval(() => {
-            
-            this.swimming_sound.pause();
+
+            //this.swimming_sound.pause();
             this.autoSwimRight();
             this.moveRight();
             this.moveLeft();
@@ -300,7 +300,7 @@ class Character extends MovableObject {
     checkPosition() {
         if (this.x > 1830 && this.x < 2200) {
             this.autoSwim = true;
-        } 
+        }
         if (this.x >= 2220) {
             this.autoSwim = false;
             this.world.level.inEndSection = true;
@@ -313,7 +313,7 @@ class Character extends MovableObject {
             this.otherDirection = false;
             this.x += this.speed;
             this.x_frame += this.speed
-            this.swimming_sound.play();
+            //this.swimming_sound.play();
         }
     }
 
@@ -322,7 +322,7 @@ class Character extends MovableObject {
             this.otherDirection = true;
             this.x -= this.speed;
             this.x_frame -= this.speed;
-            this.swimming_sound.play();
+            //this.swimming_sound.play();
         }
     }
 
@@ -331,7 +331,7 @@ class Character extends MovableObject {
             this.swimmingUp = true;
             this.y -= this.speed;
             this.y_frame -= this.speed;
-            this.swimming_sound.play();
+            //this.swimming_sound.play();
         } else {
             this.swimmingUp = false;
         }
@@ -342,7 +342,7 @@ class Character extends MovableObject {
             this.swimmingDown = true;
             this.y += this.speed;
             this.y_frame += this.speed;
-            this.swimming_sound.play();
+            //this.swimming_sound.play();
         } else {
             this.swimmingDown = false;
         }

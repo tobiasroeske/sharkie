@@ -10,7 +10,7 @@ class World {
     poisonbar = new Poisonbar();
     amountCoins = this.level.coins.length;
     amountPoisons = this.level.poisons.length;
-    bubbles = [];
+    bubbles = [new Bubble()];
     lastShot = 0;
 
     constructor(canvas, keyboard) {
@@ -34,6 +34,7 @@ class World {
             this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
             this.checkShootBubble();
             this.getCollisionWithBubble();
+            this.checkIfGameIsOver();
         }, 200);
     }
 
@@ -56,7 +57,7 @@ class World {
             return;
         }
         if (this.keyboard.SPACE && !this.character.otherDirection && this.character.poisons > 0) {
-            let bubble = new Bubble(this.character.x_frame + 80, this.character.y_frame);
+            let bubble = new Bubble(this.character.x_frame + 60, this.character.y_frame);
             this.updateStatusBar(this.poisonbar);
             this.bubbles.push(bubble);
             this.lastShootTime = currentTime;
@@ -88,6 +89,21 @@ class World {
                 }
             }
         })
+    }
+
+    checkIfGameIsOver() {
+        if (this.character.isDead()) {
+            setTimeout(() => {
+                document.getElementById('gameOver').classList.remove('d-none');
+                document.querySelector('main').classList.add('d-none');
+            }, 5000);
+        } else if (this.level.enemies[this.level.enemies.length - 1].isDead()) {
+            setTimeout(() => {
+                console.log('Im dead!')
+                document.getElementById('youWon').classList.remove('d-none');
+                document.querySelector('main').classList.add('d-none');
+            }, 5000);
+        }
     }
 
     getCollisionsWithCollectables(arr, amount, bar) {

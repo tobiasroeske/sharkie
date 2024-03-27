@@ -16,18 +16,10 @@ let fullscreen = false;
 background_sound.loop = true;
 
 function init() {
+    checkScreenOrientation();
     load();
     canvas = document.getElementById('canvas');
     setTouchEvents();
-}
-
-function checkScreenSize() {
-    let inLandscapeMode = window.innerHeight < 480;
-    fullscreen = false;
-    if (inLandscapeMode) {
-        toggleFullscreen();
-        document.getElementById('fullscreenIcon').classList.add('d-none');
-    }
 }
 
 function toggleFullscreen() {
@@ -37,13 +29,34 @@ function toggleFullscreen() {
         fullscreen = true;
         document.getElementById('fullscreenIcon').classList.remove('d-none');
         document.getElementById('fullscreenBtn').classList.add('d-none');
-        
+
     } else {
         document.exitFullscreen();
         fullscreen = false;
         document.getElementById('fullscreenIcon').classList.add('d-none');
         document.getElementById('fullscreenBtn').classList.remove('d-none');
     }
+}
+
+function checkScreenOrientation() {
+    let inPortraitMode = window.matchMedia('(orientation: portrait)');
+    inPortraitMode.addEventListener('change', (e) => {
+        let portrait = e.matches;
+        if (portrait) {
+            document.getElementById('noLandscape').classList.remove('d-none');
+            document.querySelector('main').classList.add('d-none');
+            // document.getElementById('gameOver').classList.add('d-none');
+            // document.getElementById('youWon').classList.add('d-none');
+        } else {
+            document.getElementById('noLandscape').classList.add('d-none');
+            document.querySelector('main').classList.remove('d-none');
+        }
+    })
+
+}
+
+function showFullscreen() {
+    document.getElementById('canvasContainer').requestFullscreen();
 }
 
 function saveToLocalStorage() {
@@ -64,31 +77,35 @@ function startGame() {
         watchedIntructions = true;
         saveToLocalStorage();
     } else {
+        document.getElementById('canvasContainer').classList.add('d-none');
         document.getElementById('firstTime').classList.add('d-none');
+        document.querySelector('h1').classList.add('d-none');
         loadLevel();
         generateLoadingScreen();
-        checkScreenSize();
         setTimeout(() => {
             world = new World(canvas, keyboard);
             document.getElementById('canvasContainer').classList.remove('d-none');
-
-        }, 1000)
+        }, 1500)
     }
 }
 
 function generateLoadingScreen() {
+    document.querySelector('main').classList.remove('d-none');
+    document.getElementById('gameOver').classList.add('d-none');
+    document.getElementById('youWon').classList.add('d-none');
     document.getElementById('menu').classList.add('d-none');
     document.getElementById('loadingScreen').classList.remove('d-none');
     let progressbar = document.getElementById('progressbar');
     let width = 0;
-    setInterval(() => {
+    let myInterval = setInterval(() => {
         width += 5;
         progressbar.style.width = `${width}%`;
         if (width > 100) {
             width = 100;
             document.getElementById('loadingScreen').classList.add('d-none');
+            clearInterval(myInterval);
         }
-    }, 50)
+    }, 75)
 }
 
 function displayIntroText() {
@@ -107,6 +124,7 @@ function displayIntroText() {
 function closeInstructions() {
     document.getElementById('menu').classList.remove('d-none');
     document.getElementById('instructions').classList.add('d-none');
+    document.querySelector('h1').classList.remove('d-none');
 }
 
 function openInstructions() {
@@ -115,50 +133,9 @@ function openInstructions() {
     document.getElementById('menu').classList.add('d-none');
     document.getElementById('firstTime').classList.add('d-none');
     document.getElementById('instructions').classList.remove('d-none');
+    document.querySelector('h1').classList.add('d-none');
     displayIntroText();
 }
-
-
-// window.addEventListener('touchstart', (e) => {
-//     e.preventDefault();
-//     e.stopPropagation();
-//     return false;
-// })
-
-window.oncontextmenu = function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    return false;
-};
-
-// function stopOtherTouchEvents() {
-//     let body = document.querySelector('body');
-//     window.addEventListener('touchstart', (e) => {
-//         e.preventDefault()
-//         e.stopPropagation();
-//         return false;
-//     });
-//     window.addEventListener('touchend', (e) => {
-//         e.preventDefault()
-//         e.stopPropagation();
-//         return false;
-//     });
-//     window.addEventListener('touchmove', (e) => {
-//         e.preventDefault()
-//         e.stopPropagation();
-//         return false;
-//     });
-//     window.addEventListener('touchcancel', (e) => {
-//         e.preventDefault()
-//         e.stopPropagation();
-//         return false;
-//     });
-//     window.addEventListener('contextmenu', (e) => {
-//         e.preventDefault()
-//         e.stopPropagation();
-//         return false;
-//     });
-// }
 
 window.addEventListener('keydown', (e) => {
     // background_sound.play()
@@ -205,54 +182,33 @@ window.addEventListener('keyup', (e) => {
     };
 });
 
-function setTouchEvents() {
-    document.getElementById('up').addEventListener('touchstart', () => {
-        keyboard.NO_KEY_PRESSED = true;
-        keyboard.UP = true;
+function hideContextMenu() {
+    document.getElementById('canvasContainer').addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
     });
-    document.getElementById('up').addEventListener('touchend', () => {
-        keyboard.NO_KEY_PRESSED = false;
-        keyboard.UP = false;
-    });
-    document.getElementById('down').addEventListener('touchstart', () => {
-        keyboard.NO_KEY_PRESSED = true;
-        keyboard.DOWN = true;
-    });
-    document.getElementById('down').addEventListener('touchend', () => {
-        keyboard.NO_KEY_PRESSED = false;
-        keyboard.DOWN = false;
-    });
-    document.getElementById('left').addEventListener('touchstart', () => {
-        keyboard.NO_KEY_PRESSED = true;
-        keyboard.LEFT = true;
-    });
-    document.getElementById('left').addEventListener('touchend', () => {
-        keyboard.NO_KEY_PRESSED = false;
-        keyboard.LEFT = false;
-    });
-    document.getElementById('right').addEventListener('touchstart', () => {
-        keyboard.NO_KEY_PRESSED = true;
-        keyboard.RIGHT = true;
-    });
-    document.getElementById('right').addEventListener('touchend', () => {
-        keyboard.NO_KEY_PRESSED = false;
-        keyboard.RIGHT = false;
-    });
-    document.getElementById('bubbleAttack').addEventListener('touchstart', () => {
-        keyboard.NO_KEY_PRESSED = true;
-        keyboard.SPACE = true;
-    });
-    document.getElementById('bubbleAttack').addEventListener('touchend', () => {
-        keyboard.NO_KEY_PRESSED = false;
-        keyboard.SPACE = false;
+}
 
-    });
-    document.getElementById('finslap').addEventListener('touchstart', () => {
+function noTouchDetected() {
+    window.addEventListener('touchend', (event) => {
         keyboard.NO_KEY_PRESSED = true;
-        keyboard.F = true;
-    });
-    document.getElementById('finslap').addEventListener('touchend', () => {
+    })
+    window.addEventListener('touchstart', (event) => {
         keyboard.NO_KEY_PRESSED = false;
-        keyboard.F = false;
+    })
+}
+
+function setTouchEvents() {
+    let touchBtns = ['up', 'down', 'left', 'right', 'space', 'f']
+    hideContextMenu();
+    noTouchDetected();
+    touchBtns.forEach(btn => {
+        document.getElementById(btn).addEventListener('touchstart', (event) => {
+            keyboard[btn.toUpperCase()] = true;
+        })
+        document.getElementById(btn).addEventListener('touchend', (event) => {
+            keyboard[btn.toUpperCase()] = false
+        })
     });
 }
