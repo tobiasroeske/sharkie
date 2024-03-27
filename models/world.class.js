@@ -4,6 +4,7 @@ class World {
     ctx;
     canvas;
     keyboard;
+    
     camera_x = 0;
     energybar = new Energybar();
     coinbar = new Coinbar();
@@ -12,6 +13,7 @@ class World {
     amountPoisons = this.level.poisons.length;
     bubbles = [new Bubble()];
     lastShot = 0;
+    soundPlayed = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -20,6 +22,7 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
+        this.soundPlayed = false;
     }
 
     setWorld() {
@@ -58,6 +61,7 @@ class World {
         }
         if (this.keyboard.SPACE && !this.character.otherDirection && this.character.poisons > 0) {
             let bubble = new Bubble(this.character.x_frame + 60, this.character.y_frame);
+            sounds[2].play();
             this.updateStatusBar(this.poisonbar);
             this.bubbles.push(bubble);
             this.lastShootTime = currentTime;
@@ -91,15 +95,25 @@ class World {
         })
     }
 
+
+
     checkIfGameIsOver() {
         if (this.character.isDead()) {
             setTimeout(() => {
+                if (!this.soundPlayed) {
+                    background_sound.pause()
+                    sounds[8].play();
+                }
                 document.getElementById('gameOver').classList.remove('d-none');
                 document.querySelector('main').classList.add('d-none');
             }, 5000);
         } else if (this.level.enemies[this.level.enemies.length - 1].isDead()) {
             setTimeout(() => {
-                console.log('Im dead!')
+                if (!this.soundPlayed) {
+                    sounds[5].pause();
+                    sounds[7].play();
+                    this.soundPlayed = false;
+                }
                 document.getElementById('youWon').classList.remove('d-none');
                 document.querySelector('main').classList.add('d-none');
             }, 5000);
@@ -112,10 +126,12 @@ class World {
                 let i = arr.indexOf(item);
                 arr.splice(i, 1)
                 if (item instanceof Coin) {
+                    sounds[0].play();
                     this.character.addCoin();
                     let percentage = 100 / amount * this.character.coins
                     bar.getPercentage(percentage);
                 } else {
+                    sounds[1].play();
                     this.character.addPoison();
                     let percentage = 100 / amount * this.character.poisons
                     bar.getPercentage(percentage);

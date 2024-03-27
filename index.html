@@ -53,7 +53,7 @@
             forces. With a blend of bravery, skill, and a wide grin, Sharkie has made the impossible possible! But the
             adventure doesn't end here - new exciting challenges and undiscovered treasures await in the sparkling blue
             of the ocean. Celebrate this triumphant moment and get ready for even more fun and adventure</span>
-        <button onclick="window.location.reload()">BACK TO MENU</button>
+        <button onclick="window.location.reload()" ontouchstart="window.location.reload()">BACK TO MENU</button>
     </div>
     <main>
         <h1>Sharkie</h1>
@@ -122,6 +122,8 @@
             <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn">fullscreen</button>
             <img src="img/fullscreen.png" alt="" class="fullscreen-icon d-none" onclick="toggleFullscreen()"
                 id="fullscreenIcon">
+            <img src="img/volume_mute.png" alt="" class="volume-icon" id="mute" onclick="toggleSound()">
+            <img src="img/volume.png" alt="" class="volume-icon d-none" id="volume" onclick="toggleSound()">
             <div class="touch-container">
                 <div class="touch-move">
                     <div class="touch-btn" id="up"><img src="img/caret-up-fill.svg" alt=""></div>

@@ -22,6 +22,7 @@ class MovableObject extends DrawableObject {
 
     hit() {
         this.gotHit = true;
+        sounds[4].play();
         this.lifepoints -= 5;
         if (this.lifepoints < 0) {
             this.lifepoints = 0;
@@ -46,6 +47,9 @@ class MovableObject extends DrawableObject {
     isHurt(obj) {
         this.hit();
         this.hurtAnimation(obj);
+        if (obj instanceof Jellyfish) {
+            sounds[3].play();
+        }
     }
 
     isColliding(obj) {

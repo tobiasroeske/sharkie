@@ -1,7 +1,9 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let background_sound = new Audio('audio/underwater_sound.mp3');
+let background_sound = new Audio('audio/backgroundsound.mp3');
+background_sound.loop = true;
+background_sound.volume = 0.5;
 let txt = `Welcome to "Sharkie"!
     Join the brave shark Sharkie on his journey through the sea, where he battles against dangerous
     jellyfish, cunning pufferfish, and even a mighty Orca.
@@ -13,13 +15,43 @@ let i = 0;
 let speed = 40;
 let watchedIntructions = false;
 let fullscreen = false;
-background_sound.loop = true;
+let mute = false;
+let sounds = [
+    new Audio('audio/coin_collected.mp3'),
+    new Audio('audio/poison.mp3'),
+    new Audio('audio/bubble.mp3'),
+    new Audio('audio/shock.mp3'),
+    new Audio('audio/hit.mp3'),
+    new Audio('audio/endbossound.mp3'),
+    new Audio('audio/swimming.mp3'),
+    new Audio('audio/success.mp3'),
+    new Audio('audio/gameover.mp3')
+]
+
 
 function init() {
     checkScreenOrientation();
     load();
     canvas = document.getElementById('canvas');
     setTouchEvents();
+}
+
+function toggleSound() {
+    let muteButton = document.getElementById('mute');
+    let volumeButton = document.getElementById('volume');
+    if (!mute) {
+        background_sound.muted = true;
+        sounds.forEach(sound => sound.muted = true);
+        mute = true;
+        muteButton.classList.toggle('d-none');
+        volumeButton.classList.toggle('d-none');
+    } else {
+        background_sound.muted = false;
+        sounds.forEach(sound => sound.muted = false);
+        mute = false;
+        muteButton.classList.toggle('d-none');
+        volumeButton.classList.toggle('d-none');
+    }
 }
 
 function toggleFullscreen() {
@@ -45,8 +77,6 @@ function checkScreenOrientation() {
         if (portrait) {
             document.getElementById('noLandscape').classList.remove('d-none');
             document.querySelector('main').classList.add('d-none');
-            // document.getElementById('gameOver').classList.add('d-none');
-            // document.getElementById('youWon').classList.add('d-none');
         } else {
             document.getElementById('noLandscape').classList.add('d-none');
             document.querySelector('main').classList.remove('d-none');
@@ -85,6 +115,7 @@ function startGame() {
         setTimeout(() => {
             world = new World(canvas, keyboard);
             document.getElementById('canvasContainer').classList.remove('d-none');
+            background_sound.play();
         }, 1500)
     }
 }
@@ -138,19 +169,22 @@ function openInstructions() {
 }
 
 window.addEventListener('keydown', (e) => {
-    // background_sound.play()
     keyboard.NO_KEY_PRESSED = false;
     if (e.key == 'ArrowLeft' || e.key == 'a') {
         keyboard.LEFT = true;
+        sounds[6].play();
     };
     if (e.key == 'ArrowRight' || e.key == 'd') {
         keyboard.RIGHT = true;
+        sounds[6].play();
     };
     if (e.key == 'ArrowDown' || e.key == 's') {
         keyboard.DOWN = true;
+        sounds[6].play();
     };
     if (e.key == 'ArrowUp' || e.key == 'w') {
         keyboard.UP = true;
+        sounds[6].play();
     };
     if (e.key == ' ') {
         keyboard.SPACE = true;
@@ -164,15 +198,19 @@ window.addEventListener('keyup', (e) => {
     keyboard.NO_KEY_PRESSED = true;
     if (e.key == 'ArrowLeft' || e.key == 'a') {
         keyboard.LEFT = false;
+        sounds[6].pause();
     };
     if (e.key == 'ArrowRight' | e.key == 'd') {
         keyboard.RIGHT = false;
+        sounds[6].pause();
     };
     if (e.key == 'ArrowDown' || e.key == 's') {
         keyboard.DOWN = false;
+        sounds[6].pause();
     };
     if (e.key == 'ArrowUp' || e.key == 'w') {
         keyboard.UP = false;
+        sounds[6].pause();
     };
     if (e.key == ' ') {
         keyboard.SPACE = false;

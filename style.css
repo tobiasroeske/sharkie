@@ -279,6 +279,15 @@ canvas {
   height: 40px;
 }
 
+.volume-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 32px;
+  right: 80px;
+  width: 40px;
+  height: 40px;
+}
+
 .touch-container {
   box-sizing: border-box;
   position: absolute;
@@ -425,6 +434,19 @@ canvas {
   }
 }
 
+@media only screen and (orientation: landscape) {
+  .touch-container {
+    display: flex;
+  }
+  .fullscreen-btn {
+    display: none;
+  }
+
+  .fullscreen-icon {
+    display: block !important;
+  }
+}
+
 @media only screen and (max-height: 780px) {
   /* h1 {
     display: none;
@@ -434,9 +456,7 @@ canvas {
     display: none;
   }
 
-  .fullscreen-icon {
-    display: block !important;
-  }
+  
 }
 
 @media only screen and (max-height: 510px) {

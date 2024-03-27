@@ -108,9 +108,7 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Fin slap/7.png',
         'img/1.Sharkie/4.Attack/Fin slap/8.png',
     ]
-
     world;
-    swimming_sound = new Audio('audio/swimming.mp3');
 
     constructor() {
         super().loadImage('img/1.Sharkie/3.Swim/1.png');
@@ -124,7 +122,6 @@ class Character extends MovableObject {
         this.loadImages(this.ATTACK_FIN_SLAP_IMAGES);
         this.animate();
         this.checkIfCloseToEnemy();
-        this.swimming_sound.volume = 0.7;
     }
 
     checkIfCloseToEnemy() {
@@ -291,7 +288,8 @@ class Character extends MovableObject {
 
     autoSwimRight() {
         this.checkPosition();
-        if (this.autoSwim && !this.world.level.inEndSection && this.world.keyboard.NO_KEY_PRESSED) {
+        let isAutoSwimming = this.autoSwim && !this.world.level.inEndSection  && !this.world.keyboard.RIGHT;
+        if (isAutoSwimming) {
             this.x += this.speed;
             this.x_frame += this.speed;
         }
@@ -302,10 +300,17 @@ class Character extends MovableObject {
             this.autoSwim = true;
         }
         if (this.x >= 2220) {
-            this.autoSwim = false;
-            this.world.level.inEndSection = true;
-            this.world.level.enemies[this.world.level.enemies.length - 1].firstContact = true;
+            background_sound.pause();
+            sounds[5].loop = true;
+            sounds[5].play();
+            this.updateStatus();
         }
+    }
+
+    updateStatus() {
+        this.autoSwim = false;
+        this.world.level.inEndSection = true;
+        this.world.level.enemies[this.world.level.enemies.length - 1].firstContact = true;
     }
 
     moveRight() {

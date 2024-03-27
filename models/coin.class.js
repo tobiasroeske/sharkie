@@ -1,4 +1,5 @@
 class Coin extends CollectableObject {
+    sound = new Audio('audio/coin_collected.mp3');
 
     IMAGES = [
         'img/4. Marcadores/1. Coins/1.png',
