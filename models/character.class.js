@@ -1,9 +1,9 @@
 class Character extends MovableObject {
     y = 180;
     x_frame = this.x + 25;
-    y_frame = this.y + this.height / 2 - 5;
+    y_frame = this.y + this.height / 2 + 5;
     width_frame = this.width - 50;
-    height_frame = this.height / 2 - 25;
+    height_frame = this.height / 2 - 45;
     speed = 3;
     otherDirection = false;
     swimmingUp = false;
@@ -231,15 +231,15 @@ class Character extends MovableObject {
      * @param {object} obj enemy object
      * @returns true if collides and false if not
      */
-    isColliding(obj) {
-        if (obj instanceof Endboss) {
-            let isEndboss = this.isEndboss(obj)
-            return isEndboss;
-        } else {
-            let isOtherObject = this.isOtherObject(obj);
-            return isOtherObject;
-        }
-    }
+    // isColliding(obj) {
+    //     if (obj instanceof Endboss) {
+    //         let isEndboss = this.isEndboss(obj)
+    //         return isEndboss;
+    //     } else {
+    //         let isOtherObject = this.isOtherObject(obj);
+    //         return isOtherObject;
+    //     }
+    // }
 
     /**
      * checks the collisions of the character when the object is the endboss

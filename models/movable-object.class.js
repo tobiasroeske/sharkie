@@ -25,6 +25,7 @@ class MovableObject extends DrawableObject {
     applyGravity() {
         setInterval(() => {
             this.y -= this.speedY;
+            this.y_frame -= this.speedY;
             this.speedY -= this.acceleration;
         }, 1000 / 25)
     }
@@ -80,18 +81,5 @@ class MovableObject extends DrawableObject {
         if (obj instanceof Jellyfish) {
             sounds[3].play();
         }
-    }
-
-    /**
-     * checks if two objects colide
-     * 
-     * @param {object} obj any moveableObject
-     * @returns 
-     */
-    isColliding(obj) {
-        return this.x + this.width >= obj.x &&
-            this.y + this.height > obj.y &&
-            this.x < obj.x + obj.width &&
-            this.y < obj.y + obj.height
     }
 }

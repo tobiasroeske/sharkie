@@ -8,6 +8,10 @@ class Bubble extends MovableObject {
         this.width = 40;
         this.speed = 12;
         this.shoot();
+        this.x_frame = this.x;
+        this.y_frame = this.y;
+        this.height_frame = this.height;
+        this.width_frame = this.width;
     }
     /**
      * applies gravity to the Bubble Object and sends it up and forward
@@ -16,7 +20,9 @@ class Bubble extends MovableObject {
         this.applyGravity();
         setInterval(() => {
             this.y -= 10;
+            this.y_frame -= 10;
             this.x += this.speed;
+            this.x_frame += this.speed;
         }, 1000 / 25)
     }
 
@@ -45,10 +51,10 @@ class Bubble extends MovableObject {
      */
     isEndboss(obj) {
         return (
-            this.x + this.width > obj.x &&
-            this.y + this.height > obj.y + obj.height / 3 &&
-            this.x < obj.x + obj.width &&
-            this.y < obj.y + obj.height / 3 + obj.height / 2
+            this.x_frame + this.width_frame > obj.x_frame &&
+            this.y_frame + this.height_frame > obj.y_frame &&
+            this.x_frame < obj.x_frame + obj.width_frame &&
+            this.y_frame < obj.y_frame + obj.height_frame
         );
     }
 
@@ -60,10 +66,10 @@ class Bubble extends MovableObject {
      */
     isJellyfish(obj) {
         return (
-            this.x + this.width >= obj.x &&
-            this.y + this.height > obj.y &&
-            this.x < obj.x + obj.width &&
-            this.y < obj.y + obj.height
+            this.x_frame + this.width_frame >= obj.x_frame &&
+            this.y_frame + this.height > obj.y_frame &&
+            this.x_frame < obj.x_frame + obj.width_frame &&
+            this.y_frame < obj.y_frame + obj.height_frame
         )
     }
 }

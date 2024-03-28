@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-    x = 4000 //2350;
+    x = 4000;
     y = -50;
     speed = 5;
     width = 350;
@@ -72,6 +72,10 @@ class Endboss extends MovableObject {
         this.loadImages(this.DEAD_IMAGES);
         this.speed = this.speed + Math.random() * 1.25;
         this.animate();
+        this.x_frame = this.x + 25;
+        this.y_frame = this.y + this.height / 3 + 70
+        this.width_frame = this.width - 60;
+        this.height_frame = this.height / 2 - 80;
     }
 
     /**
@@ -107,6 +111,7 @@ class Endboss extends MovableObject {
             } else {
                 this.loadImage(this.DEAD_IMAGES[4]);
                 this.y -= 20;
+                this.y_frame -= 20;
             }
         } 
     }
@@ -145,6 +150,7 @@ class Endboss extends MovableObject {
      */
     moveLeft() {
         this.x -= this.speed + 10;
+        this.x_frame -= this.speed + 10;
         this.animateImages(this.ATTACK_IMAGES);
         if (this.x <= 2050) {
             this.movingLeft = false;
@@ -156,6 +162,7 @@ class Endboss extends MovableObject {
      */
     moveRight() {
         this.x += this.speed + 10;
+        this.x_frame += this.speed + 10;
         if (this.x >= 2350) {
             this.movingLeft = true;
         }
@@ -166,6 +173,7 @@ class Endboss extends MovableObject {
      */
     moveUp(y_end) {
         this.y -= this.speed
+        this.y_frame -= this.speed
         this.animateImages(this.FLOATING_IMAGES);
         if (this.y <= -140 || this.y <= y_end) {
             this.movingUp = false;
@@ -177,6 +185,7 @@ class Endboss extends MovableObject {
      */
     moveDown() {
         this.y += this.speed;
+        this.y_frame += this.speed;
         this.animateImages(this.FLOATING_IMAGES);
         if (this.y >= 90) {
             this.movingUp = true;
@@ -188,6 +197,7 @@ class Endboss extends MovableObject {
      */
     animateIntro() {
         this.x = 2350;
+        this.x_frame = 2350;
         this.animateImages(this.INTRO_IMAGES)
     }
 
@@ -199,11 +209,11 @@ class Endboss extends MovableObject {
         this.introDone = true;
     }
 
-    drawFrame(ctx) {
-        ctx.beginPath();
-        ctx.lineWidth = "5";
-        ctx.strokeStyle = "blue";
-        ctx.rect(this.x, this.y + this.height / 3, this.width, this.height / 2);
-        ctx.stroke();
-    }
+    // drawFrame(ctx) {
+    //     ctx.beginPath();
+    //     ctx.lineWidth = "5";
+    //     ctx.strokeStyle = "blue";
+    //     ctx.rect(this.x, this.y + this.height / 3, this.width, this.height / 2);
+    //     ctx.stroke();
+    // }
 }

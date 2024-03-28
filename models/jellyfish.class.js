@@ -8,6 +8,8 @@ class Jellyfish extends Enemy {
     acceleration = 0.2;
     closeToCharacter = false;
 
+
+
     /**
      * moves the jellyfish downwards and once it reaches the canvas bottom it stops the interval
      * and moves it upwards
@@ -15,6 +17,7 @@ class Jellyfish extends Enemy {
     moveDown() {
         let myInterval = setInterval(() => {
             this.y += this.speed;
+            this.y_frame +=  this.speed
             if (this.y >= 410) {
                 clearInterval(myInterval);
                 this.moveUp();
@@ -29,6 +32,7 @@ class Jellyfish extends Enemy {
     moveUp() {
         let myInterval = setInterval(() => {
             this.y -= this.speed;
+            this.y_frame -= this.speed;
             if (this.y <= 0) {
                 clearInterval(myInterval);
                 this.moveDown();
