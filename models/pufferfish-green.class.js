@@ -38,5 +38,9 @@ class PufferfishGreen extends Pufferfish {
         this.animate();
         this.x = x;
         this.y = y;
+        this.x_frame = this.x + 10;
+        this.y_frame = this.y + 10;
+        this.width_frame = this.width - 25;
+        this.height_frame = this.height - 20;
     }
 }

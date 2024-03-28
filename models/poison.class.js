@@ -17,5 +17,9 @@ class Poison extends CollectableObject {
         this.height = 50;
         this.x = x
         this.animate();
+        this.x_frame = this.x + 5;
+        this.y_frame = this.y + 5;
+        this.width_frame = this.width - 10;
+        this.height_frame = this.height - 10;
     }
 }

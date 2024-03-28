@@ -29,5 +29,9 @@ class JellyfishLila  extends Jellyfish{
         this.speed = this.speed + Math.random() * 0.5;
         this.animate();
         this.x = x;
+        this.x_frame = this.x + 5;
+        this.y_frame = this.y + 12;
+        this.width_frame = this.width - 10;
+        this.height_frame = this.height - 30;
     }
 }

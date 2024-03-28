@@ -14,6 +14,7 @@ class Pufferfish extends Enemy {
     moveLeft() {
         setInterval(() => {
             this.x -= this.speed;
+            this.x_frame -= this.speed;
         }, 1000 / 60)
     }
 

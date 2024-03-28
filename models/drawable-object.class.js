@@ -4,6 +4,10 @@ class DrawableObject {
     img;
     height = 150;
     width = 100;
+    x_frame;
+    y_frame;
+    width_frame;
+    height_frame;
     imageCache = {};
     currentImage = 0;
     lifepoints = 100;
@@ -26,6 +30,29 @@ class DrawableObject {
      */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawFrame(ctx) {
+        if (this instanceof Background == false && this instanceof Statusbar == false) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x_frame, this.y_frame, this.width_frame, this.height_frame);
+            ctx.stroke();
+        }
+    }
+
+    /**
+     * checks if two objects colide
+     * 
+     * @param {object} obj any moveableObject
+     * @returns 
+     */
+    isColliding(obj) {
+        return this.x_frame + this.width_frame >= obj.x_frame  &&
+            this.y_frame + this.height_frame > obj.y_frame &&
+            this.x_frame < obj.x_frame + obj.width_frame &&
+            this.y_frame < obj.y_frame + obj.height_frame
     }
 
     /**

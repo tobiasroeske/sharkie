@@ -1,9 +1,9 @@
 class Character extends MovableObject {
     y = 180;
     x_frame = this.x + 25;
-    y_frame = this.y + this.height / 2 - 5;
+    y_frame = this.y + this.height / 2 + 5;
     width_frame = this.width - 50;
-    height_frame = this.height / 2 - 25;
+    height_frame = this.height / 2 - 45;
     speed = 3;
     otherDirection = false;
     swimmingUp = false;
@@ -143,6 +143,14 @@ class Character extends MovableObject {
 
     }
 
+    drawFrame(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x_frame, this.y_frame, this.width_frame, this.height_frame);
+        ctx.stroke();
+    }
+
     /**
      * adds one coin to the coins array
      */
@@ -215,22 +223,6 @@ class Character extends MovableObject {
                 this.gotHit = false;
             }
         }, 200);
-    }
-
-    /**
-     * checks if the character is colling with the endboss or any other object
-     * 
-     * @param {object} obj enemy object
-     * @returns true if collides and false if not
-     */
-    isColliding(obj) {
-        if (obj instanceof Endboss) {
-            let isEndboss = this.isEndboss(obj)
-            return isEndboss;
-        } else {
-            let isOtherObject = this.isOtherObject(obj);
-            return isOtherObject;
-        }
     }
 
     /**
