@@ -143,6 +143,14 @@ class Character extends MovableObject {
 
     }
 
+    drawFrame(ctx) {
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x_frame, this.y_frame, this.width_frame, this.height_frame);
+        ctx.stroke();
+    }
+
     /**
      * adds one coin to the coins array
      */

@@ -38,8 +38,8 @@ class World {
      */
     run() {
         this.lastShot = new Date().getTime();
-        setInterval(() => {
-            this.getCollisionsWithEnemy();
+        let runInterval = setInterval(() => {
+            this.getCollisionsWithEnemy(runInterval);
             this.getCollisionsWithCollectables(this.level.coins, this.amountCoins, this.coinbar);
             this.getCollisionsWithCollectables(this.level.poisons, this.amountPoisons, this.poisonbar);
             this.shootBubble();
@@ -104,14 +104,14 @@ class World {
      * checks for every enemy if it is colliding with the character. If it is colliding and the character is attacking
      * it calls the attach method. If not it updates the characters stats
      */
-    getCollisionsWithEnemy() {
+    getCollisionsWithEnemy(interval) {
         this.level.enemies.forEach(enemy => {
             let isJellyfish = enemy instanceof Jellyfish;
             if (this.character.isColliding(enemy)) {
                 if (this.character.isAttacking && !isJellyfish) {
                     this.character.attack(enemy)
                 } else {
-                    this.updateCharacter(enemy)
+                    this.updateCharacter(enemy, interval)
                 }
             }
         })
@@ -122,7 +122,7 @@ class World {
      * 
      * @param {object} obj enemy object
      */
-    updateCharacter(obj) {
+    updateCharacter(obj, interval) {
         this.character.isHurt(obj);
         this.energybar.getPercentage(this.character.lifepoints);
         if (this.character.isDead()) {
@@ -280,6 +280,7 @@ class World {
             this.rotateCharacter(obj, 30);
         } else {
             obj.draw(this.ctx);
+            obj.drawFrame(this.ctx);
         }
     }
 
@@ -292,6 +293,7 @@ class World {
      */
     flipCharacter(obj) {
         this.ctx.save();
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.width, 0);
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(obj.img, obj.x * -1, obj.y, obj.width, obj.height);
@@ -306,7 +308,7 @@ class World {
      */
     rotateCharacter(obj, degrees) {
         this.ctx.save();
-
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.drawImage(obj.img, -obj.width / 2, -obj.height / 2, obj.width, obj.height);
@@ -321,6 +323,7 @@ class World {
      */
     rotateFlippedCharacter(obj, degrees) {
         this.ctx.save();
+        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.scale(-1, 1);

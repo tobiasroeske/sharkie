@@ -28,6 +28,16 @@ class DrawableObject {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+    drawFrame(ctx) {
+        if (this instanceof Background == false && this instanceof Statusbar == false) {
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "blue";
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
     /**
      * creates for every path in the array an image Object and saves it in the imageCache Object
      * 
