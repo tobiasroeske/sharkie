@@ -7,7 +7,7 @@ class World {
     keyboard;
 
     camera_x = 0;
-    energybar = new Energybar();
+    energybar = new Energybar(20);
     coinbar = new Coinbar();
     poisonbar = new Poisonbar();
     amountCoins = this.level.coins.length;
@@ -150,6 +150,7 @@ class World {
         setTimeout(() => {
             if (!this.soundPlayed) {
                 background_sound.pause()
+                sounds[5].pause();
                 sounds[8].play();
                 this.soundPlayed = true;
             }
@@ -259,6 +260,7 @@ class World {
         this.addToMap(this.energybar);
         this.addToMap(this.coinbar);
         this.addToMap(this.poisonbar);
+        this.addToMap(this.level.enemies[this.level.enemies.length - 1].energybar);
         this.ctx.translate(this.camera_x, 0);
     }
 
@@ -280,7 +282,6 @@ class World {
             this.rotateCharacter(obj, 30);
         } else {
             obj.draw(this.ctx);
-            obj.drawFrame(this.ctx);
         }
     }
 
@@ -293,7 +294,6 @@ class World {
      */
     flipCharacter(obj) {
         this.ctx.save();
-        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.width, 0);
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(obj.img, obj.x * -1, obj.y, obj.width, obj.height);
@@ -308,7 +308,6 @@ class World {
      */
     rotateCharacter(obj, degrees) {
         this.ctx.save();
-        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.drawImage(obj.img, -obj.width / 2, -obj.height / 2, obj.width, obj.height);
@@ -323,7 +322,6 @@ class World {
      */
     rotateFlippedCharacter(obj, degrees) {
         this.ctx.save();
-        obj.drawFrame(this.ctx);
         this.ctx.translate(obj.x + obj.width / 2, obj.y + obj.height / 2);
         this.ctx.rotate(degrees * Math.PI / 180);
         this.ctx.scale(-1, 1);

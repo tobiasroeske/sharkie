@@ -9,9 +9,10 @@ class Energybar extends Statusbar {
         'img/4. Marcadores/orange/100_  copia.png'
     ]
 
-    constructor() {
+    constructor(x) {
         super().loadImage(this.IMAGES[5]);
         this.loadImages(this.IMAGES);
         this.y = 0;
+        this.x = x;
     }
 }

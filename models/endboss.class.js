@@ -8,7 +8,8 @@ class Endboss extends MovableObject {
     introDone = false;
     movingUp = true;
     movingLeft = true;
-    lifepoints = 30;
+    lifepoints = 100;
+    energybar = new Energybar(4000);
 
     FLOATING_IMAGES = [
         'img/2.Enemy/3 Final Enemy/2.floating/1.png',
@@ -76,6 +77,18 @@ class Endboss extends MovableObject {
         this.y_frame = this.y + this.height / 3 + 70
         this.width_frame = this.width - 60;
         this.height_frame = this.height / 2 - 80;
+    }
+
+    hit() {
+        this.gotHit = true;
+        sounds[4].play();
+        this.lifepoints -= 20;
+        this.energybar.getPercentage(this.lifepoints);
+        if (this.lifepoints < 0) {
+            this.lifepoints = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
     }
 
     /**
@@ -196,6 +209,7 @@ class Endboss extends MovableObject {
      * animates the intro sequence
      */
     animateIntro() {
+        this.energybar.x = 500;
         this.x = 2350;
         this.x_frame = 2350;
         this.animateImages(this.INTRO_IMAGES)

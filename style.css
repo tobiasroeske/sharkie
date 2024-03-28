@@ -514,3 +514,19 @@ canvas {
     font-size: 56px;
   }
 }
+
+@media only screen and (max-height: 400px) {
+  .menu-buttons {
+    gap: 40px;
+  }
+
+  .main {
+    gap: 16px;
+  }
+
+  .sharkie {
+    width: 35%;
+    height: 100%;
+    object-fit: contain;
+  }
+}

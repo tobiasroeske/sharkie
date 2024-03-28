@@ -32,16 +32,6 @@ class DrawableObject {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-    drawFrame(ctx) {
-        if (this instanceof Background == false && this instanceof Statusbar == false) {
-            ctx.beginPath();
-            ctx.lineWidth = "5";
-            ctx.strokeStyle = "blue";
-            ctx.rect(this.x_frame, this.y_frame, this.width_frame, this.height_frame);
-            ctx.stroke();
-        }
-    }
-
     /**
      * checks if two objects colide
      * 
