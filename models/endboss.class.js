@@ -208,12 +208,4 @@ class Endboss extends MovableObject {
         this.firstContact = false;
         this.introDone = true;
     }
-
-    // drawFrame(ctx) {
-    //     ctx.beginPath();
-    //     ctx.lineWidth = "5";
-    //     ctx.strokeStyle = "blue";
-    //     ctx.rect(this.x, this.y + this.height / 3, this.width, this.height / 2);
-    //     ctx.stroke();
-    // }
 }

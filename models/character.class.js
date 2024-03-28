@@ -226,22 +226,6 @@ class Character extends MovableObject {
     }
 
     /**
-     * checks if the character is colling with the endboss or any other object
-     * 
-     * @param {object} obj enemy object
-     * @returns true if collides and false if not
-     */
-    // isColliding(obj) {
-    //     if (obj instanceof Endboss) {
-    //         let isEndboss = this.isEndboss(obj)
-    //         return isEndboss;
-    //     } else {
-    //         let isOtherObject = this.isOtherObject(obj);
-    //         return isOtherObject;
-    //     }
-    // }
-
-    /**
      * checks the collisions of the character when the object is the endboss
      * 
      * @param {object} obj enemy object 
